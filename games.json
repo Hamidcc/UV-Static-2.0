@@ -1,5 +1,16 @@
 [
-  { "id":1,  "title":"Stellar Odyssey",  "year":"2024", "genre":"Space RPG",    "platform":"PC", "description":"Navigate the cosmos in this breathtaking space exploration epic. Chart unknown star systems, forge alliances with alien civilizations, and uncover the secrets of a dying universe.", "thumbnail":"", "file":"/games/stellar-odyssey/" },
-  { "id":2,  "title":"Neon Abyss",       "year":"2023", "genre":"Roguelike",    "platform":"PC",           "description":"Descend into a procedurally-generated dungeon dripping with neon-soaked atmosphere. Roguelike mechanics meet bullet-hell chaos in this hypnotic underground adventure.", "thumbnail":"", "file":"/games/neon-abyss/" },
-  { "id":3,  "title":"Help! No Brakes",     "year":"UNKNOWN", "genre":"Cars",     "platform":"PC",           "description":"Race through a series of levels without the option to brake! Can you do it?", "thumbnail":"", "file":"/b.html" }
+  {
+    "id": 1,
+    "title": "Deepest Sword",
+    "description": "Venture deep into the Cavern of Longing. Plunge your sword deep into the dragon's heart! How deep is your resolve?",
+    "icon": "/i/ds.png",
+    "file": "/g/deep/"
+  },
+  {
+    "id": 2,
+    "title": "Help! No Brakes",
+    "description": "Race through a series of levels without the option to brake! Can you do it?",
+    "icon": "/i/hnp.png",
+    "file": "/b.html"
+  }
 ]
