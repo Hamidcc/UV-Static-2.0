@@ -324,7 +324,7 @@ img{display:block;max-width:100%;}
   margin-bottom:3.5vw;
   padding:0;
   position:relative;
-  min-height:0;
+  min-height:100;
 }
 
 .row-header{
@@ -899,22 +899,10 @@ function render(games){
   // all games row
   wrap.appendChild(buildRow("All Games", games));
 
-  // genre rows
-  const genreMap = {};
-  games.forEach(g=>{
-    if(!genreMap[g.genre]) genreMap[g.genre]=[];
-    genreMap[g.genre].push(g);
-  });
-
   // recently added (last 6 by id)
   const recent = [...games].sort((a,b)=>b.id-a.id).slice(0,8);
   wrap.appendChild(buildRow("Recently Added", recent));
 
-  // top genres
-  Object.entries(genreMap)
-    .sort((a,b)=>b[1].length-a[1].length)
-    .slice(0,5)
-    .forEach(([genre,arr])=> wrap.appendChild(buildRow(genre, arr)));
 }
 
 /* ──────────────────────────────────────────
