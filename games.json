@@ -14,10 +14,17 @@
     "file": "/b.html"
   },
   {
-    "id": 2,
+    "id": 3,
     "title": "Admin",
     "description": "The entire office forgot their passwords! Can you crack them?",
     "icon": "/i/a.png",
     "file": "/g/admin/"
+  },
+  {
+    "id": 4,
+    "title": "CaptchaWare",
+    "description": "CaptchaWare is a game where you complete captchas in quick succession!",
+    "icon": "/i/cp.png",
+    "file": "/g/captcha/"
   }
 ]
