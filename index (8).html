@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ultralearn</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ─────────────────────────────────────────────
+   RESET & BASE
+───────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  background:#141414;
+  color:#fff;
+  font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+img{display:block;max-width:100%;}
+
+/* ─────────────────────────────────────────────
+   NAVBAR
+───────────────────────────────────────────── */
+.navbar{
+  position:fixed;top:0;left:0;right:0;
+  z-index:9999;
+  height:68px;
+  padding:0 56px;
+  display:flex;align-items:center;gap:32px;
+  transition:background 0.4s ease;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.85) 0%,transparent 100%);
+}
+.navbar.solid{
+  background:#141414;
+}
+
+.nav-logo{
+  font-size:1.75rem;
+  font-weight:800;
+  color:#E50914;
+  letter-spacing:-0.03em;
+  flex-shrink:0;
+  user-select:none;
+}
+
+.nav-links{
+  display:flex;align-items:center;gap:20px;
+  list-style:none;
+  flex:1;
+}
+.nav-links a{
+  font-size:0.82rem;
+  font-weight:500;
+  color:#e5e5e5;
+  transition:color 0.15s;
+  white-space:nowrap;
+}
+.nav-links a:hover{color:#b3b3b3;}
+.nav-links a.active{font-weight:700;color:#fff;}
+
+.nav-right{
+  margin-left:auto;
+  display:flex;align-items:center;gap:20px;
+}
+
+/* Search */
+.nav-search{
+  display:flex;align-items:center;
+  gap:0;
+  border:1px solid transparent;
+  transition:border-color 0.2s, background 0.2s, width 0.3s ease;
+  width:32px;overflow:hidden;
+  cursor:pointer;
+  height:32px;
+  border-radius:3px;
+}
+.nav-search.open{
+  background:rgba(0,0,0,0.75);
+  border-color:#fff;
+  width:230px;cursor:text;
+}
+.nav-search-icon{
+  width:32px;height:32px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-search-icon svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.nav-search input{
+  flex:1;background:transparent;border:none;outline:none;
+  font-family:inherit;font-size:0.82rem;color:#fff;
+  padding-right:10px;width:0;
+  transition:width 0.3s;
+}
+.nav-search.open input{width:100%;}
+.nav-search input::placeholder{color:#777;}
+
+/* Icon buttons */
+.nav-icon-btn{
+  width:32px;height:32px;
+  background:transparent;border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  border-radius:50%;
+  transition:background 0.15s;
+}
+.nav-icon-btn:hover{background:rgba(255,255,255,0.1);}
+.nav-icon-btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+/* Avatar */
+.nav-avatar{
+  width:32px;height:32px;
+  border-radius:4px;
+  background:linear-gradient(135deg,#E50914 0%,#b20710 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:700;color:#fff;
+  cursor:pointer;
+  user-select:none;
+  flex-shrink:0;
+}
+
+/* ─────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────── */
+.hero{
+  position:relative;
+  width:100%;
+  height:min(56vw, 720px);
+  min-height:400px;
+  display:flex;align-items:center;
+  overflow:hidden;
+}
+
+.hero-backdrop{
+  position:absolute;inset:0;z-index:0;
+  background:#0a0a0a;
+}
+/* cinematic generated art panel */
+.hero-art{
+  position:absolute;
+  right:0;top:0;bottom:0;
+  width:70%;z-index:0;
+}
+.hero-art-canvas{
+  width:100%;height:100%;
+  position:relative;overflow:hidden;
+}
+/* Each game gets a unique cinematic gradient */
+.hero-art-canvas::before{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--hero-bg, linear-gradient(135deg,#1a0404 0%,#380a0a 40%,#0a0a14 100%));
+  transition:background 0.8s ease;
+}
+/* abstract scan-line texture */
+.hero-art-canvas::after{
+  content:'';
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(255,255,255,0.012) 3px,
+    rgba(255,255,255,0.012) 4px
+  );
+  pointer-events:none;
+}
+/* geometric overlay shapes */
+.hero-shape-1{
+  position:absolute;
+  width:500px;height:500px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(229,9,20,0.18) 0%,transparent 65%);
+  top:10%;right:15%;z-index:1;
+  animation:heroFloat 8s ease-in-out infinite;
+}
+.hero-shape-2{
+  position:absolute;
+  width:300px;height:300px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.05) 0%,transparent 70%);
+  bottom:20%;right:30%;z-index:1;
+  animation:heroFloat 11s ease-in-out infinite reverse;
+}
+.hero-shape-3{
+  position:absolute;
+  width:200px;height:600px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.04) 0%,transparent 60%);
+  transform:rotate(25deg);
+  top:-10%;right:20%;z-index:1;
+}
+/* game title watermark on art */
+.hero-art-title{
+  position:absolute;
+  bottom:15%;right:8%;
+  font-size:clamp(4rem,8vw,9rem);
+  font-weight:800;
+  color:rgba(255,255,255,0.04);
+  letter-spacing:-0.04em;
+  line-height:1;
+  z-index:2;
+  pointer-events:none;
+  white-space:nowrap;
+  text-transform:uppercase;
+  user-select:none;
+  transition:opacity 0.6s;
+}
+
+@keyframes heroFloat{
+  0%,100%{transform:translateY(0) scale(1);}
+  50%{transform:translateY(-20px) scale(1.05);}
+}
+
+/* Gradient overlays */
+.hero-overlay{
+  position:absolute;inset:0;z-index:2;
+  background:
+    linear-gradient(77deg,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.4) 40%,transparent 65%),
+    linear-gradient(to top,#141414 0%,rgba(20,20,20,0.6) 12%,transparent 28%),
+    linear-gradient(to bottom,rgba(0,0,0,0.4) 0%,transparent 18%);
+}
+
+.hero-content{
+  position:relative;z-index:3;
+  padding:0 56px;
+  max-width:560px;
+  margin-top:20px;
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-bottom:18px;
+}
+.hero-badge-dot{
+  width:6px;height:6px;border-radius:50%;background:#E50914;flex-shrink:0;
+}
+.hero-badge-text{
+  font-size:0.72rem;font-weight:700;
+  letter-spacing:0.2em;text-transform:uppercase;color:#E50914;
+}
+
+.hero-title{
+  font-size:clamp(2.8rem,5.5vw,5rem);
+  font-weight:800;
+  line-height:1.0;
+  letter-spacing:-0.03em;
+  color:#fff;
+  margin-bottom:16px;
+  text-shadow:2px 2px 20px rgba(0,0,0,0.6);
+}
+
+.hero-meta{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:18px;
+  flex-wrap:wrap;
+}
+.hero-year{
+  font-size:0.82rem;font-weight:500;color:#46d369;
+}
+.hero-sep{
+  width:1px;height:14px;background:rgba(255,255,255,0.3);flex-shrink:0;
+}
+.hero-genre-tag{
+  font-size:0.78rem;font-weight:500;color:#b3b3b3;
+}
+.hero-platform-tag{
+  font-size:0.72rem;font-weight:600;
+  border:1px solid rgba(255,255,255,0.35);
+  padding:2px 8px;border-radius:3px;
+  color:#e5e5e5;letter-spacing:0.04em;
+}
+
+.hero-desc{
+  font-size:0.9rem;font-weight:400;
+  color:#e5e5e5;line-height:1.65;
+  margin-bottom:26px;
+  text-shadow:1px 1px 8px rgba(0,0,0,0.8);
+}
+
+.hero-btns{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;color:#000;
+  font-size:0.9rem;font-weight:700;
+  padding:10px 26px;border-radius:4px;
+  border:none;cursor:pointer;
+  transition:background 0.15s,transform 0.15s;
+  white-space:nowrap;
+}
+.btn-primary:hover{background:rgba(255,255,255,0.75);transform:scale(1.03);}
+.btn-primary svg{width:18px;height:18px;fill:#000;flex-shrink:0;}
+
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(109,109,110,0.65);color:#fff;
+  font-size:0.9rem;font-weight:700;
+  padding:10px 26px;border-radius:4px;
+  border:none;cursor:pointer;
+  transition:background 0.15s,transform 0.15s;
+  white-space:nowrap;
+  backdrop-filter:blur(4px);
+}
+.btn-secondary:hover{background:rgba(109,109,110,0.4);transform:scale(1.03);}
+.btn-secondary svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ─────────────────────────────────────────────
+   ROWS CONTAINER
+───────────────────────────────────────────── */
+.rows-wrap{
+  position:relative;z-index:10;
+  margin-top:-100px;
+  padding-bottom:80px;
+}
+
+/* ─────────────────────────────────────────────
+   ROW
+───────────────────────────────────────────── */
+.row{
+  margin-bottom:3.5vw;
+  padding:0;
+  position:relative;
+  min-height:0;
+}
+
+.row-header{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding:0 56px;
+  margin-bottom:10px;
+}
+.row-title{
+  font-size:1.1rem;font-weight:600;color:#e5e5e5;
+  letter-spacing:0.01em;
+}
+.row-see-all{
+  font-size:0.72rem;font-weight:600;
+  color:#54b9c5;letter-spacing:0.06em;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.25s;
+  white-space:nowrap;
+}
+.row:hover .row-see-all{opacity:1;pointer-events:auto;}
+
+/* Slider */
+.slider-outer{
+  position:relative;
+  padding:0;
+}
+/* edge masks */
+.slider-outer::before,
+.slider-outer::after{
+  content:'';
+  position:absolute;top:0;bottom:0;
+  width:56px;z-index:3;
+  pointer-events:none;
+}
+.slider-outer::before{left:0;background:linear-gradient(to right,#141414,transparent);}
+.slider-outer::after{right:0;background:linear-gradient(to left,#141414,transparent);}
+
+.slider-track{
+  display:flex;
+  gap:6px;
+  padding:16px 56px 32px;
+  overflow-x:auto;
+  overflow-y:visible;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  /* allow cards to overflow vertically on hover */
+  margin-bottom:-16px;
+}
+.slider-track::-webkit-scrollbar{display:none;}
+
+/* Arrow buttons */
+.arrow{
+  position:absolute;
+  top:0;bottom:0;
+  z-index:4;
+  width:56px;
+  background:rgba(20,20,20,0);
+  border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  opacity:0;
+  transition:opacity 0.2s,background 0.2s;
+}
+.slider-outer:hover .arrow{opacity:1;}
+.arrow:hover{background:rgba(20,20,20,0.75);}
+.arrow.left{left:0;border-radius:0 4px 4px 0;}
+.arrow.right{right:0;border-radius:4px 0 0 4px;}
+.arrow svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ─────────────────────────────────────────────
+   GAME CARD
+───────────────────────────────────────────── */
+.card{
+  position:relative;
+  flex-shrink:0;
+  width:220px;
+  border-radius:4px;
+  cursor:pointer;
+  scroll-snap-align:start;
+  transition:transform 0.3s ease 0.2s,z-index 0s 0.2s;
+  transform-origin:center center;
+  will-change:transform;
+  z-index:1;
+}
+.card:hover{
+  transform:scale(1.28);
+  z-index:100;
+  transition:transform 0.3s ease 0.15s,z-index 0s 0.15s;
+}
+.slider-track .card:first-child:hover{transform-origin:left center;}
+.slider-track .card:last-child:hover{transform-origin:right center;}
+
+/* Image area */
+.card-img{
+  width:100%;aspect-ratio:16/9;
+  border-radius:4px;
+  overflow:hidden;
+  position:relative;
+  background:#1f1f1f;
+}
+.card-img img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.3s ease;
+}
+.card:hover .card-img img{transform:scale(1.04);}
+
+/* Placeholder (no image, no emoji) */
+.card-ph{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:6px;
+  position:relative;overflow:hidden;
+}
+.card-ph-title{
+  font-size:0.8rem;font-weight:700;
+  color:rgba(255,255,255,0.22);
+  text-align:center;padding:0 12px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  position:relative;z-index:1;
+  line-height:1.3;
+}
+.card-ph-line{
+  width:24px;height:2px;
+  background:#E50914;opacity:0.45;
+  position:relative;z-index:1;
+}
+
+/* Card overlay gradient */
+.card-img::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 50%);
+  opacity:0;
+  transition:opacity 0.2s;
+  pointer-events:none;
+}
+.card:hover .card-img::after{opacity:1;}
+
+/* Permanent bottom title */
+.card-base-label{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:18px 10px 8px;
+  background:linear-gradient(to top,rgba(0,0,0,0.9),transparent);
+  border-radius:0 0 4px 4px;
+  pointer-events:none;
+}
+.card-base-label-text{
+  font-size:0.72rem;font-weight:700;
+  color:#fff;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;
+}
+
+/* ─── HOVER INFO PANEL ─── */
+.card-info{
+  position:absolute;
+  left:0;right:0;
+  top:100%;
+  background:#181818;
+  border-radius:0 0 6px 6px;
+  padding:12px 14px 14px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.8);
+  transform:translateY(-4px);
+  opacity:0;pointer-events:none;
+  transition:opacity 0.2s ease 0.25s, transform 0.2s ease 0.25s;
+  z-index:1;
+}
+.card:hover .card-info{
+  opacity:1;pointer-events:auto;
+  transform:translateY(0);
+}
+
+/* round icon btns in panel */
+.card-info-btns{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:10px;
+}
+.ci-btn{
+  width:28px;height:28px;border-radius:50%;
+  border:2px solid rgba(255,255,255,0.55);
+  background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:border-color 0.15s,background 0.15s;
+  flex-shrink:0;
+}
+.ci-btn:hover{border-color:#fff;background:rgba(255,255,255,0.12);}
+.ci-btn.play{
+  background:#fff;border-color:#fff;
+}
+.ci-btn.play:hover{background:rgba(255,255,255,0.75);}
+.ci-btn svg{
+  width:12px;height:12px;
+  fill:none;stroke:rgba(255,255,255,0.9);
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+.ci-btn.play svg{stroke:#000;fill:#000;}
+.ci-btn.play svg polygon{fill:#000;stroke:none;}
+
+.card-info-title{
+  font-size:0.78rem;font-weight:700;color:#fff;
+  margin-bottom:6px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.card-info-meta{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:7px;flex-wrap:wrap;
+}
+.ci-year{font-size:0.7rem;font-weight:500;color:#46d369;}
+.ci-genre{
+  font-size:0.65rem;font-weight:600;
+  border:1px solid rgba(255,255,255,0.3);
+  padding:1px 6px;border-radius:2px;
+  color:#b3b3b3;white-space:nowrap;
+}
+.ci-platform{
+  font-size:0.65rem;color:#b3b3b3;
+  white-space:nowrap;
+}
+.card-info-desc{
+  font-size:0.68rem;font-weight:400;color:#b3b3b3;
+  line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+
+/* ─────────────────────────────────────────────
+   SEARCH OVERLAY
+───────────────────────────────────────────── */
+.search-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.9);
+  z-index:8888;
+  display:none;
+  padding-top:110px;
+  overflow-y:auto;
+}
+.search-overlay.show{display:block;}
+
+.search-overlay-inner{
+  padding:0 56px 60px;
+}
+.so-label{
+  font-size:0.72rem;font-weight:600;
+  color:#777;letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:20px;
+}
+.so-grid{
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+.so-grid .card{
+  width:200px;
+  transform-origin:center center !important;
+}
+.so-empty{
+  font-size:0.9rem;color:#777;
+  padding:40px 0;
+}
+
+/* ─────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────── */
+footer{
+  padding:48px 56px 32px;
+  background:#141414;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+.footer-logo{
+  font-size:1.2rem;font-weight:800;
+  color:#E50914;letter-spacing:-0.02em;
+  margin-bottom:24px;
+}
+.footer-links{
+  display:flex;flex-wrap:wrap;gap:12px 32px;
+  margin-bottom:20px;
+}
+.footer-links a{
+  font-size:0.75rem;color:#777;
+  transition:color 0.15s;
+}
+.footer-links a:hover{color:#b3b3b3;}
+.footer-copy{
+  font-size:0.72rem;color:#4d4d4d;
+  margin-top:16px;
+}
+
+/* ─────────────────────────────────────────────
+   UTILITIES
+───────────────────────────────────────────── */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+
+@media(max-width:900px){
+  .navbar{padding:0 24px;}
+  .hero-content{padding:0 24px;max-width:100%;}
+  .row-header,.slider-track{padding-left:24px;padding-right:24px;}
+  .slider-outer::before{width:24px;}
+  .slider-outer::after{width:24px;}
+  footer{padding:32px 24px 20px;}
+  .search-overlay-inner{padding:0 24px 40px;}
+  .card{width:160px;}
+  .so-grid .card{width:160px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="nav">
+  <div class="nav-logo">ULTRALEARN</div>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#">Games</a></li>
+    <li><a href="#">New Releases</a></li>
+    <li><a href="#">Community</a></li>
+  </ul>
+  <div class="nav-right">
+    <!-- Search -->
+    <div class="nav-search" id="nav-search">
+      <div class="nav-search-icon" id="search-trigger">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <input type="text" id="search-input" placeholder="Search games…" autocomplete="off"/>
+    </div>
+    <!-- Bell -->
+    <button class="nav-icon-btn" aria-label="Notifications">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+    </button>
+    <!-- Avatar -->
+    <div class="nav-avatar">UL</div>
+  </div>
+</header>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="search-overlay">
+  <div class="search-overlay-inner">
+    <div class="so-label" id="so-label">Results</div>
+    <div class="so-grid" id="so-grid"></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-backdrop"></div>
+  <div class="hero-art" id="hero-art">
+    <div class="hero-art-canvas" id="hero-canvas">
+      <div class="hero-shape-1" id="hero-shape1"></div>
+      <div class="hero-shape-2" id="hero-shape2"></div>
+      <div class="hero-shape-3"></div>
+    </div>
+    <div class="hero-art-title" id="hero-art-title"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      <span class="hero-badge-text">Featured Game</span>
+    </div>
+    <h1 class="hero-title" id="hero-title">Loading…</h1>
+    <div class="hero-meta">
+      <span class="hero-year" id="hero-year"></span>
+      <div class="hero-sep"></div>
+      <span class="hero-genre-tag" id="hero-genre"></span>
+      <div class="hero-sep"></div>
+      <span class="hero-platform-tag" id="hero-platform"></span>
+    </div>
+    <p class="hero-desc" id="hero-desc"></p>
+    <div class="hero-btns">
+      <a class="btn-primary" id="hero-play" href="#">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Play Now
+      </a>
+      <button class="btn-secondary" id="hero-more">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.5" fill="#fff"/></svg>
+        More Info
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ROWS -->
+<div class="rows-wrap" id="rows-wrap"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ULTRALEARN</div>
+  <div class="footer-links">
+    <a href="#">Audio & Subtitles</a>
+    <a href="#">Media Center</a>
+    <a href="#">Privacy</a>
+    <a href="#">Help Center</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">Cookie Preferences</a>
+    <a href="#">Corporate Information</a>
+    <a href="#">Contact Us</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Ultralearn, Inc.</div>
+</footer>
+
+<script>
+/* ──────────────────────────────────────────
+   DATA
+────────────────────────────────────────── */
+const GAMES = [
+  { id:1,  title:"Stellar Odyssey",  year:"2024", genre:"Space RPG",   platform:"PC / Console", description:"Navigate the cosmos in this breathtaking space exploration epic. Chart unknown star systems, forge alliances with alien civilizations, and uncover the secrets of a dying universe.", thumbnail:"", file:"/games/stellar-odyssey/" },
+  { id:2,  title:"Neon Abyss",       year:"2023", genre:"Roguelike",   platform:"PC",            description:"Descend into a procedurally-generated dungeon dripping with neon-soaked atmosphere. Roguelike mechanics meet bullet-hell chaos in this hypnotic underground adventure.",  thumbnail:"", file:"/games/neon-abyss/" },
+  { id:3,  title:"Iron Citadel",     year:"2024", genre:"Strategy",    platform:"PC",            description:"Build, defend, and conquer in this grand strategy fortress simulator. Command armies of steel and stone as rival kingdoms close in on all sides.", thumbnail:"", file:"/games/iron-citadel/" },
+  { id:4,  title:"Phantom Circuit",  year:"2024", genre:"Racing",      platform:"All Platforms", description:"Race through cyberpunk megacities at impossible speeds. Upgrade your vehicle with stolen tech, outrun corporate enforcers, and become the ghost of the grid.", thumbnail:"", file:"/games/phantom-circuit/" },
+  { id:5,  title:"Verdant Wilds",    year:"2023", genre:"Survival",    platform:"PC / Console",  description:"A lush open-world survival experience where nature fights back. Craft tools from the earth, tame wild beasts, and build a civilization from the roots up.", thumbnail:"", file:"/games/verdant-wilds/" },
+  { id:6,  title:"Cryptborn",        year:"2024", genre:"Action RPG",  platform:"PC / Console",  description:"Ancient evils stir beneath forgotten tombs. A dark fantasy action RPG where death is a mechanic, not a failure. Master cursed weapons and shatter godlike bosses.", thumbnail:"", file:"/games/cryptborn/" },
+  { id:7,  title:"Aqua Protocol",    year:"2023", genre:"Adventure",   platform:"PC",            description:"Explore the deep ocean trenches of a water-covered alien world. Pilot your submersible through bioluminescent caverns and unravel an ancient aquatic mystery.", thumbnail:"", file:"/games/aqua-protocol/" },
+  { id:8,  title:"Mindforge",        year:"2024", genre:"Puzzle",      platform:"All Platforms", description:"A puzzle game that bends perception and challenges logic at every turn. Each chamber teaches a new law of physics — then breaks it. Can you escape the mind?", thumbnail:"", file:"/games/mindforge/" },
+  { id:9,  title:"Voidwalker",       year:"2024", genre:"Horror",      platform:"PC / Console",  description:"A first-person horror survival set in an abandoned space station. Every shadow hides a new nightmare. Uncover what happened to the crew before it finds you.", thumbnail:"", file:"/games/voidwalker/" },
+  { id:10, title:"Solar Drift",      year:"2023", genre:"Shoot-em-up", platform:"PC",            description:"A stylish side-scrolling shoot-em-up with handcrafted levels and a killer synth soundtrack. Three difficulty modes — casual to soul-crushing.", thumbnail:"", file:"/games/solar-drift/" },
+  { id:11, title:"Forge of Empires", year:"2024", genre:"Strategy",    platform:"Browser / PC",  description:"Lead a civilization from the Stone Age into the future. Manage resources, research technologies, and wage wars against rival empires across the ages.", thumbnail:"", file:"/games/forge-of-empires/" },
+  { id:12, title:"Drift Colosseum",  year:"2023", genre:"Racing",      platform:"PC / Console",  description:"Underground illegal racing circuits across five continents. Tune every bolt on your car, master drift physics, and dominate the championship.", thumbnail:"", file:"/games/drift-colosseum/" },
+  { id:13, title:"Hollow Realm",     year:"2024", genre:"Action RPG",  platform:"PC / Console",  description:"An interconnected dark fantasy world full of secrets. Every path leads somewhere dangerous. Master parry-based combat and unlock the realm's dark truth.", thumbnail:"", file:"/games/hollow-realm/" },
+  { id:14, title:"Terrashift",       year:"2024", genre:"Puzzle",      platform:"All Platforms", description:"Reshape the landscape to guide your tiny civilization to safety. A deeply thoughtful puzzle game with hundreds of handcrafted levels.", thumbnail:"", file:"/games/terrashift/" },
+  { id:15, title:"Warfront Zero",    year:"2023", genre:"Strategy",    platform:"PC",            description:"Real-time strategy reimagined with brutal asymmetric factions. No two matches play the same. Command your forces or watch your empire fall.", thumbnail:"", file:"/games/warfront-zero/" },
+  { id:16, title:"Darkwater",        year:"2024", genre:"Horror",      platform:"PC",            description:"The deep sea holds things that should never have been found. A claustrophobic survival horror game set in the crushing dark of the ocean floor.", thumbnail:"", file:"/games/darkwater/" },
+];
+
+/* Art backgrounds per genre */
+const GENRE_COLORS = {
+  "Space RPG":   ["#060d1a","#0e2040","#1a3060"],
+  "Roguelike":   ["#0d0520","#1a0840","#2a1060"],
+  "Strategy":    ["#100800","#2a1a00","#402800"],
+  "Racing":      ["#000814","#001030","#001a50"],
+  "Survival":    ["#030e04","#061c08","#0a2e10"],
+  "Action RPG":  ["#140202","#2a0404","#400808"],
+  "Adventure":   ["#020a14","#041830","#062a4a"],
+  "Puzzle":      ["#080414","#140828","#201040"],
+  "Horror":      ["#060000","#120000","#1e0202"],
+  "Shoot-em-up": ["#060810","#0e1428","#162040"],
+  "Browser / PC":["#0c0c10","#181820","#242430"],
+};
+
+function getGenreColors(genre) {
+  return GENRE_COLORS[genre] || ["#0e0e14","#18181f","#222228"];
+}
+
+/* ──────────────────────────────────────────
+   HTML ESCAPE
+────────────────────────────────────────── */
+function esc(s){
+  return String(s)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+/* ──────────────────────────────────────────
+   PLACEHOLDER
+────────────────────────────────────────── */
+function makePlaceholder(game){
+  const [c1,c2,c3] = getGenreColors(game.genre);
+  return `<div class="card-ph" style="background:linear-gradient(145deg,${c1} 0%,${c2} 50%,${c3} 100%)">
+    <div class="card-ph-line"></div>
+    <div class="card-ph-title">${esc(game.title)}</div>
+  </div>`;
+}
+
+/* ──────────────────────────────────────────
+   BUILD CARD
+────────────────────────────────────────── */
+function buildCard(game){
+  const hasThumb = game.thumbnail && game.thumbnail.trim();
+  const div = document.createElement("div");
+  div.className = "card";
+
+  const imgHtml = hasThumb
+    ? `<img src="${esc(game.thumbnail)}" alt="${esc(game.title)}" loading="lazy">`
+    : makePlaceholder(game);
+
+  div.innerHTML = `
+    <div class="card-img">
+      ${imgHtml}
+      <div class="card-base-label">
+        <div class="card-base-label-text">${esc(game.title)}</div>
+      </div>
+    </div>
+    <div class="card-info">
+      <div class="card-info-btns">
+        <a class="ci-btn play" href="${esc(game.file)}" title="Play">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </a>
+        <button class="ci-btn" title="Add to library">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="ci-btn" title="Like">
+          <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
+        </button>
+      </div>
+      <div class="card-info-title">${esc(game.title)}</div>
+      <div class="card-info-meta">
+        <span class="ci-year">${esc(game.year)}</span>
+        <span class="ci-genre">${esc(game.genre)}</span>
+        <span class="ci-platform">${esc(game.platform)}</span>
+      </div>
+      <div class="card-info-desc">${esc(game.description)}</div>
+    </div>
+  `;
+
+  return div;
+}
+
+/* ──────────────────────────────────────────
+   BUILD ROW
+────────────────────────────────────────── */
+function buildRow(label, games){
+  const row = document.createElement("div");
+  row.className = "row";
+
+  const track = document.createElement("div");
+  track.className = "slider-track";
+  games.forEach(g => track.appendChild(buildCard(g)));
+
+  const prev = document.createElement("button");
+  prev.className = "arrow left";
+  prev.setAttribute("aria-label","Scroll left");
+  prev.innerHTML = `<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>`;
+  prev.addEventListener("click",()=> track.scrollBy({left:-(220*3+12),behavior:"smooth"}));
+
+  const next = document.createElement("button");
+  next.className = "arrow right";
+  next.setAttribute("aria-label","Scroll right");
+  next.innerHTML = `<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>`;
+  next.addEventListener("click",()=> track.scrollBy({left:(220*3+12),behavior:"smooth"}));
+
+  const outer = document.createElement("div");
+  outer.className = "slider-outer";
+  outer.appendChild(prev);
+  outer.appendChild(track);
+  outer.appendChild(next);
+
+  row.innerHTML = `
+    <div class="row-header">
+      <span class="row-title">${esc(label)}</span>
+      <a href="#" class="row-see-all">Explore All &rsaquo;</a>
+    </div>`;
+  row.appendChild(outer);
+  return row;
+}
+
+/* ──────────────────────────────────────────
+   HERO
+────────────────────────────────────────── */
+function setHero(game){
+  document.getElementById("hero-title").textContent    = game.title;
+  document.getElementById("hero-year").textContent     = game.year;
+  document.getElementById("hero-genre").textContent    = game.genre;
+  document.getElementById("hero-platform").textContent = game.platform;
+  document.getElementById("hero-desc").textContent     = game.description;
+  document.getElementById("hero-play").href            = game.file;
+  document.getElementById("hero-art-title").textContent = game.title.toUpperCase();
+
+  const [c1,c2,c3] = getGenreColors(game.genre);
+  document.getElementById("hero-canvas").style.setProperty(
+    "--hero-bg", `linear-gradient(135deg,${c1} 0%,${c2} 45%,${c3} 100%)`
+  );
+  // dynamic hero shapes
+  document.getElementById("hero-shape1").style.background =
+    `radial-gradient(circle,${c3}55 0%,transparent 65%)`;
+}
+
+/* ──────────────────────────────────────────
+   RENDER
+────────────────────────────────────────── */
+function render(games){
+  const wrap = document.getElementById("rows-wrap");
+  wrap.innerHTML = "";
+
+  // all games row
+  wrap.appendChild(buildRow("All Games", games));
+
+  // genre rows
+  const genreMap = {};
+  games.forEach(g=>{
+    if(!genreMap[g.genre]) genreMap[g.genre]=[];
+    genreMap[g.genre].push(g);
+  });
+
+  // recently added (last 6 by id)
+  const recent = [...games].sort((a,b)=>b.id-a.id).slice(0,8);
+  wrap.appendChild(buildRow("Recently Added", recent));
+
+  // top genres
+  Object.entries(genreMap)
+    .sort((a,b)=>b[1].length-a[1].length)
+    .slice(0,5)
+    .forEach(([genre,arr])=> wrap.appendChild(buildRow(genre, arr)));
+}
+
+/* ──────────────────────────────────────────
+   SEARCH
+────────────────────────────────────────── */
+const navSearch   = document.getElementById("nav-search");
+const searchInput = document.getElementById("search-input");
+const overlay     = document.getElementById("search-overlay");
+const soGrid      = document.getElementById("so-grid");
+const soLabel     = document.getElementById("so-label");
+
+document.getElementById("search-trigger").addEventListener("click",()=>{
+  navSearch.classList.toggle("open");
+  if(navSearch.classList.contains("open")) searchInput.focus();
+  else { searchInput.value=""; closeOverlay(); }
+});
+
+searchInput.addEventListener("input",()=>{
+  const q = searchInput.value.trim().toLowerCase();
+  if(!q){ closeOverlay(); return; }
+  const hits = GAMES.filter(g=>
+    g.title.toLowerCase().includes(q)||
+    g.genre.toLowerCase().includes(q)||
+    g.description.toLowerCase().includes(q)
+  );
+  soLabel.textContent = hits.length
+    ? `Results for "${searchInput.value.trim()}"`
+    : `No results for "${searchInput.value.trim()}"`;
+  soGrid.innerHTML = "";
+  if(!hits.length){
+    soGrid.innerHTML = `<div class="so-empty">No games found.</div>`;
+  } else {
+    hits.forEach(g=> soGrid.appendChild(buildCard(g)));
+  }
+  overlay.classList.add("show");
+});
+
+searchInput.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){ navSearch.classList.remove("open"); searchInput.value=""; closeOverlay(); }
+});
+overlay.addEventListener("click",e=>{
+  if(e.target===overlay){ navSearch.classList.remove("open"); searchInput.value=""; closeOverlay(); }
+});
+function closeOverlay(){ overlay.classList.remove("show"); soGrid.innerHTML=""; }
+
+/* ──────────────────────────────────────────
+   NAVBAR SCROLL
+────────────────────────────────────────── */
+const nav = document.getElementById("nav");
+window.addEventListener("scroll",()=>nav.classList.toggle("solid",scrollY>60),{passive:true});
+
+/* ──────────────────────────────────────────
+   INIT
+────────────────────────────────────────── */
+(async function init(){
+  let games = GAMES;
+  try {
+    const r = await fetch("./games.json");
+    if(r.ok){ const d = await r.json(); if(d.length) games = d; }
+  } catch(_){}
+  setHero(games.find(g=>g.id===6)||games[0]);
+  render(games);
+})();
+</script>
+</body>
+</html>
