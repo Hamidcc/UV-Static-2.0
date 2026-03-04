@@ -364,15 +364,15 @@ img{display:block;max-width:100%;}
 .slider-track{
   display:flex;
   gap:6px;
-  padding:16px 56px 32px;
+  padding:32px 56px 80px; /* more vertical breathing room */
   overflow-x:auto;
-  overflow-y:visible;
+  overflow-y:visible;     /* allow vertical expansion */
   scroll-snap-type:x mandatory;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
-  /* allow cards to overflow vertically on hover */
-  margin-bottom:-16px;
+  align-items:flex-start; /* critical */
 }
+   
 .slider-track::-webkit-scrollbar{display:none;}
 
 .slider-outer{
