@@ -10,7 +10,14 @@
     "id": 2,
     "title": "Help! No Brakes",
     "description": "Race through a series of levels without the option to brake! Can you do it?",
-    "icon": "/i/hnp.png",
+    "icon": "/i/hnb.png",
     "file": "/b.html"
+  },
+  {
+    "id": 2,
+    "title": "Admin",
+    "description": "The entire office forgot their passwords! Can you crack them?",
+    "icon": "/i/a.png",
+    "file": "/g/admin/"
   }
 ]
