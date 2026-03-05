@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UltraLearn — Personalized Intelligence for Every Learner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14;
+  --surface: #0d1422;
+  --surface2: #111929;
+  --border: #1e2d45;
+  --border2: #243450;
+  --accent: #3b82f6;
+  --accent2: #60a5fa;
+  --accent3: #93c5fd;
+  --gold: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --text: #e8edf5;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --glow: rgba(59,130,246,0.15);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ─────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* ── BACKGROUND ORBS ────────────────────────────── */
+.bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  opacity: 0.12;
+}
+.bg-orb-1 { width: 600px; height: 600px; background: #3b82f6; top: -200px; right: -100px; }
+.bg-orb-2 { width: 400px; height: 400px; background: #8b5cf6; bottom: 100px; left: -150px; }
+.bg-orb-3 { width: 300px; height: 300px; background: #06b6d4; top: 50%; left: 40%; }
+
+/* ── NAVBAR ─────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  height: 64px;
+  background: rgba(8,12,20,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.35rem; font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  text-decoration: none;
+}
+.nav-logo-icon {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.nav-links {
+  display: flex; align-items: center; gap: 4px;
+}
+.nav-btn {
+  background: none; border: none;
+  color: var(--text2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem; font-weight: 500;
+  padding: 8px 14px; border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.nav-btn:hover { color: var(--text); background: var(--surface2); }
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+.nav-signin {
+  background: none; border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem; font-weight: 500;
+  padding: 8px 20px; border-radius: 8px;
+  cursor: pointer; transition: all 0.2s;
+}
+.nav-signin:hover { background: var(--surface2); border-color: var(--accent); }
+.nav-getstarted {
+  background: var(--accent);
+  border: none; color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem; font-weight: 600;
+  padding: 8px 20px; border-radius: 8px;
+  cursor: pointer; transition: all 0.2s;
+}
+.nav-getstarted:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(59,130,246,0.4); }
+
+/* ── AUTH GATE MESSAGE ──────────────────────────── */
+.auth-gate-msg {
+  display: none;
+  position: fixed;
+  top: 76px; right: 40px; z-index: 200;
+  background: #1a0808;
+  border: 1px solid #7f1d1d;
+  border-radius: 10px;
+  padding: 12px 18px;
+  color: var(--red);
+  font-size: 0.875rem; font-weight: 500;
+  box-shadow: 0 8px 32px rgba(239,68,68,0.2);
+  animation: slideIn 0.2s ease;
+}
+.auth-gate-msg.show { display: flex; align-items: center; gap: 8px; }
+@keyframes slideIn { from { opacity:0; transform: translateY(-8px); } to { opacity:1; transform: translateY(0); } }
+
+/* ── MAIN CONTENT ───────────────────────────────── */
+main { position: relative; z-index: 1; }
+
+/* ── HERO ───────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 60px;
+  padding: 100px 80px 60px;
+  max-width: 1400px; margin: 0 auto;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--accent2);
+  margin-bottom: 28px;
+}
+.hero-badge-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(1.3);} }
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+.hero-title span {
+  background: linear-gradient(135deg, #60a5fa, #818cf8, #a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 1.05rem; font-weight: 400;
+  color: var(--text2); line-height: 1.7;
+  max-width: 500px; margin-bottom: 40px;
+}
+.hero-cta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 50px; }
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border: none; color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; font-weight: 600;
+  padding: 13px 28px; border-radius: 10px;
+  cursor: pointer; transition: all 0.25s;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,102,241,0.5); }
+.btn-demo {
+  background: none; border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; font-weight: 500;
+  padding: 13px 28px; border-radius: 10px;
+  cursor: pointer; transition: all 0.25s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-demo:hover { border-color: var(--accent); color: var(--text); background: rgba(59,130,246,0.05); }
+.play-icon {
+  width: 20px; height: 20px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px;
+}
+.hero-stats { display: flex; gap: 32px; }
+.stat { }
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--text);
+}
+.stat-label { font-size: 0.8rem; color: var(--text3); font-weight: 400; margin-top: 2px; }
+
+/* ── SIGN IN CARD ───────────────────────────────── */
+.signin-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.02) inset;
+  position: relative;
+  overflow: hidden;
+}
+.signin-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+}
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem; font-weight: 700;
+  margin-bottom: 6px;
+}
+.card-sub { font-size: 0.875rem; color: var(--text2); margin-bottom: 28px; }
+.form-group { margin-bottom: 18px; }
+.form-label { font-size: 0.8rem; font-weight: 600; color: var(--text2); margin-bottom: 7px; display: block; letter-spacing: 0.3px; }
+.form-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  padding: 12px 16px;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input::placeholder { color: var(--text3); }
+.form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+.form-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.remember { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text2); cursor: pointer; }
+.remember input { accent-color: var(--accent); }
+.forgot { font-size: 0.8rem; color: var(--accent2); cursor: pointer; text-decoration: none; }
+.forgot:hover { text-decoration: underline; }
+.btn-signin {
+  width: 100%;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border: none; color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; font-weight: 600;
+  padding: 13px; border-radius: 10px;
+  cursor: pointer; transition: all 0.25s;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+}
+.btn-signin:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(99,102,241,0.5); }
+.divider { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-text { font-size: 0.75rem; color: var(--text3); white-space: nowrap; }
+.social-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.social-btn {
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text2); font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 500;
+  padding: 10px; border-radius: 9px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.social-btn:hover { border-color: var(--border2); color: var(--text); background: rgba(255,255,255,0.03); }
+.card-footer { text-align: center; font-size: 0.82rem; color: var(--text3); }
+.card-footer a { color: var(--accent2); cursor: pointer; }
+.card-footer a:hover { text-decoration: underline; }
+.error-msg { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 10px 14px; color: #fca5a5; font-size: 0.85rem; margin-bottom: 16px; display: none; }
+.error-msg.show { display: block; }
+.success-msg { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px; padding: 10px 14px; color: #6ee7b7; font-size: 0.85rem; margin-bottom: 16px; display: none; }
+.success-msg.show { display: block; }
+.demo-hint { background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px; padding: 10px 14px; font-size: 0.8rem; color: var(--text3); margin-bottom: 18px; }
+.demo-hint code { color: var(--accent2); font-family: 'DM Mono', monospace; background: rgba(59,130,246,0.1); padding: 1px 5px; border-radius: 4px; }
+
+/* ── FEATURES SECTION ───────────────────────────── */
+.section {
+  padding: 100px 80px;
+  max-width: 1400px; margin: 0 auto;
+}
+.section-eyebrow {
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 800; letter-spacing: -1px;
+  line-height: 1.15; margin-bottom: 16px;
+}
+.section-sub { font-size: 1rem; color: var(--text2); max-width: 560px; line-height: 1.7; }
+
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  margin-top: 56px;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  cursor: default;
+}
+.feature-card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,0.3); }
+.feature-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 18px;
+}
+.feature-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+.feature-desc { font-size: 0.875rem; color: var(--text2); line-height: 1.65; }
+
+/* ── METRICS SECTION ────────────────────────────── */
+.metrics-section {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 56px 80px;
+}
+.metrics-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
+}
+.metric-item {
+  padding: 24px 20px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.metric-item:last-child { border-right: none; }
+.metric-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem; font-weight: 800;
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+.metric-label { font-size: 0.78rem; color: var(--text3); font-weight: 400; line-height: 1.4; }
+
+/* ── HOW IT WORKS ───────────────────────────────── */
+.steps-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  margin-top: 56px; position: relative;
+}
+.steps-grid::before {
+  content: ''; position: absolute;
+  top: 32px; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), var(--border), transparent);
+}
+.step-card { text-align: center; padding: 28px 20px; position: relative; }
+.step-num {
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800;
+  margin: 0 auto 20px; position: relative; z-index: 1;
+  box-shadow: 0 0 0 8px rgba(59,130,246,0.1);
+}
+.step-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+.step-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+/* ── SUBJECTS SECTION ───────────────────────────── */
+.subjects-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  margin-top: 48px;
+}
+.subject-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 20px;
+  display: flex; align-items: center; gap: 12px;
+  transition: all 0.2s; cursor: pointer;
+}
+.subject-pill:hover { border-color: rgba(59,130,246,0.35); background: rgba(59,130,246,0.04); }
+.subj-icon { font-size: 22px; }
+.subj-name { font-size: 0.875rem; font-weight: 600; }
+.subj-count { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+
+/* ── TESTIMONIALS ───────────────────────────────── */
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  margin-top: 56px;
+}
+.testimonial {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px;
+}
+.t-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 14px; }
+.t-text { font-size: 0.9rem; color: var(--text2); line-height: 1.65; margin-bottom: 20px; font-style: italic; }
+.t-author { display: flex; align-items: center; gap: 12px; }
+.t-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; color: #fff;
+  font-family: 'Syne', sans-serif;
+}
+.t-name { font-size: 0.875rem; font-weight: 600; }
+.t-role { font-size: 0.78rem; color: var(--text3); margin-top: 2px; }
+
+/* ── FOOTER ─────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 60px 80px 40px;
+  max-width: 1400px; margin: 0 auto;
+}
+.footer-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  margin-bottom: 48px;
+}
+.footer-brand-desc { font-size: 0.875rem; color: var(--text2); line-height: 1.7; margin-top: 14px; max-width: 280px; }
+.footer-col-title { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links li a { font-size: 0.85rem; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+.footer-links li a:hover { color: var(--text2); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid var(--border); }
+.footer-copy { font-size: 0.8rem; color: var(--text3); }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 0.8rem; color: var(--text3); text-decoration: none; }
+.footer-legal a:hover { color: var(--text2); }
+
+/* ── DEMO MODAL ─────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  width: 100%; max-width: 900px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+  animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+@keyframes modalIn { from { opacity:0; transform: scale(0.93) translateY(20px); } to { opacity:1; transform: scale(1) translateY(0); } }
+.modal::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  border-radius: 24px 24px 0 0;
+}
+.modal-header {
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.modal-close {
+  width: 36px; height: 36px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; cursor: pointer; color: var(--text2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: all 0.2s; flex-shrink: 0;
+}
+.modal-close:hover { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: var(--red); }
+.modal-body { padding: 32px; }
+
+/* ── DEMO QUESTION UI ───────────────────────────── */
+.demo-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.demo-subject-tag {
+  background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25);
+  border-radius: 100px; padding: 4px 12px;
+  font-size: 0.78rem; font-weight: 600; color: var(--accent2);
+  font-family: 'DM Mono', monospace;
+}
+.demo-meta { display: flex; gap: 16px; align-items: center; }
+.demo-meta-item { font-size: 0.75rem; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+.demo-meta-item span { color: var(--text2); font-weight: 500; }
+
+.question-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px;
+  margin-bottom: 20px;
+}
+.q-id { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--text3); margin-bottom: 12px; }
+.q-text { font-size: 1.05rem; font-weight: 500; line-height: 1.6; margin-bottom: 24px; }
+.q-text strong { color: var(--accent2); }
+
+.answer-area {
+  display: flex; gap: 10px; align-items: center; margin-bottom: 16px;
+}
+.answer-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 1rem; padding: 12px 16px;
+  outline: none; transition: all 0.2s;
+}
+.answer-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+.btn-submit {
+  background: var(--accent); border: none; color: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
+  padding: 12px 20px; border-radius: 10px; cursor: pointer;
+  transition: all 0.2s; white-space: nowrap;
+}
+.btn-submit:hover { background: #2563eb; }
+.btn-hint {
+  background: none; border: 1px solid var(--border2); color: var(--text2);
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 500;
+  padding: 12px 16px; border-radius: 10px; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-hint:hover { border-color: var(--gold); color: var(--gold); background: rgba(245,158,11,0.05); }
+
+.hints-container { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.hint-item {
+  background: rgba(245,158,11,0.06);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 0.875rem; color: #fcd34d;
+  display: flex; gap: 10px; align-items: flex-start;
+  animation: fadeUp 0.3s ease;
+}
+@keyframes fadeUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+.hint-num { font-family: 'DM Mono', monospace; font-size: 0.75rem; background: rgba(245,158,11,0.2); border-radius: 4px; padding: 1px 6px; white-space: nowrap; margin-top: 1px; }
+
+/* ── TRACKING PANEL ─────────────────────────────── */
+.tracking-panel {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.tracking-title {
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.tracking-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.tracking-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.track-metric {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  text-align: center;
+}
+.track-val {
+  font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800;
+  margin-bottom: 4px;
+}
+.track-lbl { font-size: 0.7rem; color: var(--text3); line-height: 1.3; }
+.track-bar { height: 3px; border-radius: 2px; margin-top: 8px; background: var(--border); overflow: hidden; }
+.track-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
+
+.personalization-box {
+  background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06));
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 16px; padding: 20px 24px;
+}
+.pers-title { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.pers-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.pers-tag {
+  background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.25);
+  border-radius: 100px; padding: 4px 12px;
+  font-size: 0.75rem; font-weight: 500; color: #c4b5fd;
+}
+.pers-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.65; }
+
+.modal-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin-top: 20px;
+}
+.info-block {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+}
+.info-block-title { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; color: var(--accent2); }
+.info-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.info-list li { font-size: 0.82rem; color: var(--text2); display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+.info-list li::before { content: '→'; color: var(--accent); font-size: 0.75rem; margin-top: 1px; flex-shrink: 0; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* responsive */
+@media (max-width: 1100px) {
+  .hero { grid-template-columns: 1fr; padding: 100px 40px 60px; }
+  .section { padding: 60px 40px; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .subjects-grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .metrics-inner { grid-template-columns: repeat(3, 1fr); }
+  .metric-item:nth-child(3) { border-right: none; }
+  .metric-item:nth-child(4) { border-top: 1px solid var(--border); }
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps-grid::before { display: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- BG ORBS -->
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
+<!-- AUTH GATE MESSAGE -->
+<div class="auth-gate-msg" id="authMsg">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  Please sign in first to access this feature.
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    UltraLearn
+  </a>
+  <div class="nav-links">
+    <button class="nav-btn" onclick="requireAuth()">Courses</button>
+    <button class="nav-btn" onclick="requireAuth()">Practice</button>
+    <button class="nav-btn" onclick="requireAuth()">Progress</button>
+    <button class="nav-btn" onclick="requireAuth()">Leaderboard</button>
+    <button class="nav-btn" onclick="requireAuth()">Community</button>
+  </div>
+  <div class="nav-actions">
+    <button class="nav-signin" onclick="document.getElementById('emailInput').focus(); document.querySelector('.signin-card').scrollIntoView({behavior:'smooth'})">Sign In</button>
+    <button class="nav-getstarted" onclick="document.querySelector('.signin-card').scrollIntoView({behavior:'smooth'})">Get Started Free</button>
+  </div>
+</nav>
+
+<main>
+  <!-- HERO + SIGNIN -->
+  <section style="background: linear-gradient(180deg, transparent 60%, rgba(59,130,246,0.03) 100%);">
+    <div class="hero">
+      <!-- Left: Copy -->
+      <div>
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Trusted by 5,000+ students worldwide
+        </div>
+        <h1 class="hero-title">
+          Learn smarter.<br>
+          Not harder.<br>
+          <span>Powered by AI.</span>
+        </h1>
+        <p class="hero-sub">
+          UltraLearn is an adaptive intelligence platform that tracks how you think, not just what you answer. With over 60,000 personalized questions, real-time behavioral analysis, and hint scaffolding, every session is uniquely yours.
+        </p>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="document.querySelector('.signin-card').scrollIntoView({behavior:'smooth'})">
+            Start Learning Free →
+          </button>
+          <button class="btn-demo" onclick="openDemo()">
+            <div class="play-icon">▶</div>
+            See how it works
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-num">60K+</div>
+            <div class="stat-label">Personalized questions</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">5,000+</div>
+            <div class="stat-label">Active students</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">94%</div>
+            <div class="stat-label">Grade improvement rate</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">18+</div>
+            <div class="stat-label">Subjects covered</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Sign In Card -->
+      <div>
+        <div class="signin-card" id="signinCard">
+          <h2 class="card-title">Welcome back</h2>
+          <p class="card-sub">Sign in to your UltraLearn account to continue your personalized journey.</p>
+
+          <div class="demo-hint">
+            🔑 <strong>Demo access:</strong> email <code>demouser</code> · password <code>ultralearn</code>
+          </div>
+
+          <div class="error-msg" id="errorMsg">Incorrect email or password. Please try again.</div>
+          <div class="success-msg" id="successMsg">✓ Signed in successfully! Redirecting to your dashboard...</div>
+
+          <div class="form-group">
+            <label class="form-label" for="emailInput">Email or username</label>
+            <input class="form-input" type="text" id="emailInput" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="passInput">Password</label>
+            <input class="form-input" type="password" id="passInput" placeholder="••••••••" autocomplete="current-password">
+          </div>
+          <div class="form-row">
+            <label class="remember">
+              <input type="checkbox" checked> Remember me for 30 days
+            </label>
+            <a class="forgot" onclick="requireAuth()">Forgot password?</a>
+          </div>
+
+          <button class="btn-signin" onclick="handleSignin()">Sign In to UltraLearn</button>
+
+          <div class="divider">
+            <div class="divider-line"></div>
+            <span class="divider-text">or continue with</span>
+            <div class="divider-line"></div>
+          </div>
+
+          <div class="social-btns">
+            <button class="social-btn" onclick="requireAuth()">
+              <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              Google
+            </button>
+            <button class="social-btn" onclick="requireAuth()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              Facebook
+            </button>
+          </div>
+
+          <p class="card-footer">
+            Don't have an account? <a onclick="requireAuth()">Create one free</a> · 
+            <a onclick="openDemo()">See a demo first</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS BAR -->
+  <div class="metrics-section">
+    <div class="metrics-inner">
+      <div class="metric-item">
+        <div class="metric-num">60,000+</div>
+        <div class="metric-label">Curated questions across all subjects</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">5,200+</div>
+        <div class="metric-label">Active student accounts</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">12</div>
+        <div class="metric-label">Behavioral signals tracked per question</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">94%</div>
+        <div class="metric-label">Report measurable grade improvement</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">3.2M+</div>
+        <div class="metric-label">Questions answered on platform</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">99.8%</div>
+        <div class="metric-label">Platform uptime reliability</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES SECTION -->
+  <section class="section">
+    <div class="section-eyebrow">Why UltraLearn</div>
+    <h2 class="section-title">Learning that adapts to<br>how <em>you</em> actually think</h2>
+    <p class="section-sub">Most platforms test you. UltraLearn understands you. Our engine tracks micro-behaviors that reveal your true learning patterns — and adjusts in real time.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(59,130,246,0.12);">🧠</div>
+        <div class="feature-title">Behavioral Intelligence Engine</div>
+        <p class="feature-desc">Tracks 12+ signals per question including time-to-first-keystroke, backspace frequency, calculation path, hover hesitation, and scroll patterns to build a deep learning fingerprint unique to you.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(16,185,129,0.12);">📊</div>
+        <div class="feature-title">Adaptive Question Selection</div>
+        <p class="feature-desc">From a database of 60,000+ questions tagged across difficulty, concept, misconception type, and cognitive load — the system selects the exact next question to maximize retention without frustration.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(245,158,11,0.12);">💡</div>
+        <div class="feature-title">Graduated Hint Scaffolding</div>
+        <p class="feature-desc">Never just gives you the answer. Hints are released in stages — conceptual framing first, then strategy, then calculation steps — so you always do the thinking and build real understanding.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(139,92,246,0.12);">🎯</div>
+        <div class="feature-title">Precision Accuracy Measurement</div>
+        <p class="feature-desc">Goes beyond right/wrong. Measures how you got there: estimated approach, number of corrections, partial credit on method even for wrong final answers, and confidence scoring from behavioral cues.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(236,72,153,0.12);">⏱️</div>
+        <div class="feature-title">Time & Pacing Analytics</div>
+        <p class="feature-desc">Tracks time per concept, not just per question. Identifies when you rush through material you haven't mastered and when you waste time on content you already know — and adjusts pacing automatically.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(6,182,212,0.12);">🔁</div>
+        <div class="feature-title">Spaced Repetition Memory System</div>
+        <p class="feature-desc">Concepts resurface at scientifically optimal intervals based on your personal forgetting curve. Material you're shaky on comes back sooner; things you've mastered stay retired longer — until you need them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" style="padding-top: 0;">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">Four steps to mastery</h2>
+    <p class="section-sub">UltraLearn turns every session into a precise diagnostic and learning event. Here's what happens from the moment you log in.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title">Diagnostic Assessment</div>
+        <p class="step-desc">A 20-minute adaptive placement test maps your exact knowledge state across every topic — not just what you know, but how confidently and efficiently you know it.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">Personalized Session Build</div>
+        <p class="step-desc">Your session is assembled from 60,000+ questions in real time, weighted by your weak spots, preferred difficulty ramp, and cognitive fatigue window to maximize every minute.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">Live Behavioral Tracking</div>
+        <p class="step-desc">Every move, pause, correction, and calculation path is captured. This data feeds directly into your learning model — making each session smarter than the last.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-title">Insight Report & Loop</div>
+        <p class="step-desc">After each session you receive a detailed insight report: accuracy by concept, speed vs. mastery tradeoffs, identified misconceptions, and your personalized next-session plan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBJECTS -->
+  <section class="section" style="padding-top: 0;">
+    <div class="section-eyebrow">Subject Coverage</div>
+    <h2 class="section-title">Every subject. Every level.</h2>
+    <p class="section-sub">From elementary arithmetic to AP Calculus, intro biology to organic chemistry — UltraLearn covers the full spectrum of K–12 and early college curriculum.</p>
+    <div class="subjects-grid">
+      <div class="subject-pill"><div class="subj-icon">➕</div><div><div class="subj-name">Mathematics</div><div class="subj-count">14,200 questions</div></div></div>
+      <div class="subject-pill"><div class="subj-icon">🧪</div><div><div class="subj-name">Chemistry</div><div class="subj-count">8,400 questions</div></div></div>
+      <div class="subject-pill"><div class="subj-icon">⚡</div><div><div class="subj-name">Physics</div><div class="subj-count">7,600 questions</div></div></div>
+      <div class="subject-pill"><div class="subj-icon">🧬</div><div><div class="subj-name">Biology</div><div class="subj-count">6,800 questions</div></div></div>
+      <div class="subject-pill"><div class="subj-icon">📖</div><div><div class="subj-name">English & Literature</div><div class="subj-count">5,200 questions</div></div></div>
+      <div class="subject-pill"><div class="subj-icon">🌍</div><div><div class="subj-name">History & Geography</div><div class="subj-count">4,900 questions</div></div></div>
+      <div class="subject-pill"><div class="subj-icon">💻</div><div><div class="subj-name">Computer Science</div><div class="subj-count">4,100 questions</div></div></div>
+      <div class="subject-pill"><div class="subj-icon">🌐</div><div><div class="subj-name">Languages</div><div class="subj-count">3,800 questions</div></div></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" style="padding-top: 0;">
+    <div class="section-eyebrow">Student Stories</div>
+    <h2 class="section-title">Real results from real students</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"I failed my first two AP Calc practice tests. After 6 weeks on UltraLearn — it figured out I was rushing through related rates — I scored a 5. The hint system never gave me the answer, but always unstuck me. I actually understand calculus now."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: linear-gradient(135deg,#3b82f6,#6366f1);">JR</div>
+          <div><div class="t-name">Jamie R.</div><div class="t-role">Grade 12 · AP Calculus BC</div></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"What gets me is the tracking. My teacher had no idea I was struggling with mole conversions — I'd just copy the method. UltraLearn saw my hesitation pattern and kept routing me back to stoichiometry until it clicked. That's wild to me."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: linear-gradient(135deg,#10b981,#06b6d4);">MK</div>
+          <div><div class="t-name">Marcus K.</div><div class="t-role">Grade 11 · AP Chemistry</div></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"I'm a slow typist and used to think that hurt my scores. UltraLearn separates writing speed from thinking speed — my accuracy profile was actually really strong. It boosted my confidence and matched me to harder problems. My SAT math went from 620 to 760."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: linear-gradient(135deg,#f59e0b,#ef4444);">AL</div>
+          <div><div class="t-name">Aisha L.</div><div class="t-role">Grade 12 · SAT Prep</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="nav-logo" style="margin-bottom: 0;">
+          <div class="nav-logo-icon">⚡</div>
+          UltraLearn
+        </div>
+        <p class="footer-brand-desc">Adaptive learning intelligence that understands how you think, not just what you answer. Trusted by 5,000+ students across the globe.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="requireAuth(); return false;">Dashboard</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Practice Sessions</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Progress Analytics</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Question Bank</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Leaderboard</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Subjects</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="requireAuth(); return false;">Mathematics</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Sciences</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">English</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">History</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Computer Science</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="requireAuth(); return false;">About Us</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Research</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Blog</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Careers</a></li>
+          <li><a href="#" onclick="requireAuth(); return false;">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 UltraLearn Inc. All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#" onclick="requireAuth(); return false;">Privacy Policy</a>
+        <a href="#" onclick="requireAuth(); return false;">Terms of Service</a>
+        <a href="#" onclick="requireAuth(); return false;">Cookie Settings</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<!-- DEMO MODAL -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div style="font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:800; margin-bottom:4px;">Live Demo: UltraLearn Question Engine</div>
+        <div style="font-size:0.85rem; color:var(--text2);">See exactly how a student experiences a personalized question — with tracking, hints, and adaptive feedback.</div>
+      </div>
+      <button class="modal-close" onclick="closeDemo()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Demo header -->
+      <div class="demo-header">
+        <div class="demo-subject-tag">📐 Algebra II · Quadratic Functions</div>
+        <div class="demo-meta">
+          <div class="demo-meta-item">Session <span>#1,847</span></div>
+          <div class="demo-meta-item">Q <span>14 / 22</span></div>
+          <div class="demo-meta-item" id="demoTimer">⏱ <span id="timerVal">00:00</span></div>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="question-card">
+        <div class="q-id">QUESTION ID: UL-ALG2-QF-04821 · Difficulty: 3.4/5 · Personalized: ✓</div>
+        <div class="q-text">
+          A ball is thrown upward from a height of 2 meters. Its height <strong>h(t)</strong> in meters is modeled by the equation <strong>h(t) = −4.9t² + 12t + 2</strong>, where <em>t</em> is time in seconds.<br><br>
+          At what time (to 2 decimal places) does the ball reach its <strong>maximum height</strong>? Show your reasoning.
+        </div>
+
+        <div class="answer-area">
+          <input class="answer-input" type="text" id="demoAnswer" placeholder="Type your answer here... e.g. t = 1.22 s" oninput="trackInput(this)">
+          <button class="btn-hint" onclick="showNextHint()">💡 Hint</button>
+          <button class="btn-submit" onclick="checkDemoAnswer()">Submit</button>
+        </div>
+
+        <div id="hintsContainer" class="hints-container"></div>
+        <div id="demoFeedback" style="display:none; margin-top:16px;"></div>
+      </div>
+
+      <!-- Live Tracking Panel -->
+      <div class="tracking-panel">
+        <div class="tracking-title">Live Behavioral Tracking</div>
+        <div class="tracking-grid">
+          <div class="track-metric">
+            <div class="track-val" id="t-time" style="color:#60a5fa;">0.0s</div>
+            <div class="track-lbl">Time on question</div>
+            <div class="track-bar"><div class="track-fill" id="tb-time" style="width:0%;background:#3b82f6;"></div></div>
+          </div>
+          <div class="track-metric">
+            <div class="track-val" id="t-keys" style="color:#10b981;">0</div>
+            <div class="track-lbl">Keystrokes logged</div>
+            <div class="track-bar"><div class="track-fill" id="tb-keys" style="width:0%;background:#10b981;"></div></div>
+          </div>
+          <div class="track-metric">
+            <div class="track-val" id="t-corr" style="color:#f59e0b;">0</div>
+            <div class="track-lbl">Corrections made</div>
+            <div class="track-bar"><div class="track-fill" id="tb-corr" style="width:0%;background:#f59e0b;"></div></div>
+          </div>
+          <div class="track-metric">
+            <div class="track-val" id="t-hints" style="color:#a78bfa;">0</div>
+            <div class="track-lbl">Hints requested</div>
+            <div class="track-bar"><div class="track-fill" id="tb-hints" style="width:0%;background:#a78bfa;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personalization Box -->
+      <div class="personalization-box">
+        <div class="pers-title">🤖 AI Personalization Signals — Active</div>
+        <div class="pers-tags">
+          <span class="pers-tag">✓ Vertex form weakness detected</span>
+          <span class="pers-tag">✓ Strong factoring recall</span>
+          <span class="pers-tag">✓ Hesitates before derivative method</span>
+          <span class="pers-tag">✓ Low typo rate</span>
+          <span class="pers-tag">✓ 2.4s avg hesitation after reading</span>
+          <span class="pers-tag">✓ Prefers symbolic notation</span>
+        </div>
+        <p class="pers-desc">
+          Based on 847 previous interactions, UltraLearn has identified that this student understands factoring but struggles when shifting between forms of quadratic equations. This question was selected specifically to reinforce vertex form interpretation. If a hint is requested, the system will scaffold toward identifying the axis of symmetry formula — not jump straight to the derivative approach this student tends to over-rely on.
+        </p>
+      </div>
+
+      <!-- Info Grid -->
+      <div class="modal-info-grid">
+        <div class="info-block">
+          <div class="info-block-title">📡 What gets measured per question</div>
+          <ul class="info-list">
+            <li>Time to first keystroke (reading speed proxy)</li>
+            <li>Total time on question (confidence indicator)</li>
+            <li>Keystroke & backspace frequency (revision behavior)</li>
+            <li>Calculation method inferred from input pattern</li>
+            <li>Hint demand and which hint level triggered action</li>
+            <li>Scroll behavior (did student re-read the question?)</li>
+            <li>Final answer accuracy and partial method scoring</li>
+            <li>Typo rate vs. correction rate (care vs. carelessness)</li>
+            <li>Answer confidence signal (fast/certain vs. slow/unsure)</li>
+          </ul>
+        </div>
+        <div class="info-block">
+          <div class="info-block-title">🎛️ How the database selects your next question</div>
+          <ul class="info-list">
+            <li>Current mastery score across 340+ concept nodes</li>
+            <li>Forgetting curve projection from spaced repetition</li>
+            <li>Identified misconception type from recent errors</li>
+            <li>Session cognitive load budget (time of day, session length)</li>
+            <li>Difficulty ramp preference (how fast you like to be challenged)</li>
+            <li>Cross-concept dependency graph (prerequisites mastered?)</li>
+            <li>Hint-usage pattern (scaffolding need level)</li>
+            <li>60,000+ question pool filtered to ~8 optimal candidates</li>
+            <li>Final selection weighted by predicted learning gain</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── AUTH GATE ──────────────────────────────────────
+function requireAuth() {
+  const msg = document.getElementById('authMsg');
+  msg.classList.add('show');
+  clearTimeout(window._authTimeout);
+  window._authTimeout = setTimeout(() => msg.classList.remove('show'), 3500);
+}
+
+// ── SIGN IN HANDLER ────────────────────────────────
+function handleSignin() {
+  const email = document.getElementById('emailInput').value.trim();
+  const pass  = document.getElementById('passInput').value;
+  const errEl = document.getElementById('errorMsg');
+  const sucEl = document.getElementById('successMsg');
+
+  errEl.classList.remove('show');
+  sucEl.classList.remove('show');
+
+  if (!email || !pass) {
+    errEl.textContent = 'Please enter your email and password.';
+    errEl.classList.add('show'); return;
+  }
+  if (email === 'demouser' && pass === 'ultralearn') {
+    // Set cookie
+    const d = new Date();
+    d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+    document.cookie = `authorized=1; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+    sucEl.classList.add('show');
+    setTimeout(() => {
+      sucEl.textContent = '✓ Authorized! Cookie set. Redirecting...';
+    }, 800);
+    return;
+  }
+  errEl.textContent = 'Incorrect email or password. Please try again.';
+  errEl.classList.add('show');
+}
+
+// Enter key on form
+document.getElementById('passInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleSignin();
+});
+document.getElementById('emailInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('passInput').focus();
+});
+
+// ── DEMO MODAL ─────────────────────────────────────
+function openDemo() {
+  document.getElementById('demoModal').classList.add('show');
+  startDemoTimer();
+}
+function closeDemo() {
+  document.getElementById('demoModal').classList.remove('show');
+  clearInterval(window._demoInterval);
+  window._demoSeconds = 0;
+}
+document.getElementById('demoModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('demoModal')) closeDemo();
+});
+
+// Timer
+window._demoSeconds = 0;
+function startDemoTimer() {
+  window._demoSeconds = 0;
+  clearInterval(window._demoInterval);
+  window._demoInterval = setInterval(() => {
+    window._demoSeconds++;
+    const m = String(Math.floor(window._demoSeconds/60)).padStart(2,'0');
+    const s = String(window._demoSeconds%60).padStart(2,'0');
+    document.getElementById('timerVal').textContent = `${m}:${s}`;
+    document.getElementById('t-time').textContent = `${window._demoSeconds}.0s`;
+    const tp = Math.min((window._demoSeconds / 90) * 100, 100);
+    document.getElementById('tb-time').style.width = tp + '%';
+  }, 1000);
+}
+
+// Keystroke tracking
+let _keys = 0, _corr = 0;
+function trackInput(el) {
+  _keys++;
+  const bs = el.value.length < (el._prev||0).length;
+  if (bs) { _corr++; document.getElementById('t-corr').textContent = _corr; document.getElementById('tb-corr').style.width = Math.min(_corr*20,100)+'%'; }
+  el._prev = el.value;
+  document.getElementById('t-keys').textContent = _keys;
+  document.getElementById('tb-keys').style.width = Math.min(_keys*2,100)+'%';
+}
+
+// Hints
+const hints = [
+  "Think about what the vertex of a parabola represents. For h(t) = at² + bt + c, where does the maximum occur on the graph?",
+  "The axis of symmetry gives you the time of maximum height. For any quadratic at² + bt + c, the axis of symmetry is at t = −b / (2a). Identify a and b in your equation.",
+  "In h(t) = −4.9t² + 12t + 2, you have a = −4.9 and b = 12. Apply the formula t = −b / (2a). Compute −12 / (2 × −4.9) and round to 2 decimal places."
+];
+let _hintIdx = 0;
+function showNextHint() {
+  if (_hintIdx >= hints.length) return;
+  const c = document.getElementById('hintsContainer');
+  const div = document.createElement('div');
+  div.className = 'hint-item';
+  div.innerHTML = `<span class="hint-num">Hint ${_hintIdx+1}</span><span>${hints[_hintIdx]}</span>`;
+  c.appendChild(div);
+  _hintIdx++;
+  const hv = document.getElementById('t-hints');
+  hv.textContent = _hintIdx;
+  document.getElementById('tb-hints').style.width = Math.min(_hintIdx*33,100)+'%';
+  if (_hintIdx >= hints.length) document.querySelector('.btn-hint').textContent = '💡 No more hints';
+}
+
+function checkDemoAnswer() {
+  const ans = document.getElementById('demoAnswer').value.trim();
+  const fb  = document.getElementById('demoFeedback');
+  fb.style.display = 'block';
+  const correct = ans.includes('1.22') || ans.includes('1.2');
+  if (correct) {
+    fb.innerHTML = `<div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:16px 20px;color:#6ee7b7;">
+      <strong>✓ Correct!</strong> t = 1.22 s is right. You applied the axis of symmetry formula t = −b/(2a) = −12/(2×−4.9) = 1.2244... ≈ 1.22 s accurately.<br><br>
+      <span style="font-size:0.8rem;color:#94a3b8;">UltraLearn noted: answer submitted without using all available hints — suggesting strong conceptual recall. Difficulty will be raised by 0.3 for the next quadratic question in your session.</span>
+    </div>`;
+  } else if (ans.length > 0) {
+    fb.innerHTML = `<div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:10px;padding:16px 20px;color:#fca5a5;">
+      <strong>Not quite.</strong> Check your approach — try requesting a hint to get unstuck without seeing the full solution.<br><br>
+      <span style="font-size:0.8rem;color:#94a3b8;">UltraLearn noted: answer attempted before requesting hints — behavioral flag added. Misconception type: may be confusing maximum of h(t) with zeros of h(t).</span>
+    </div>`;
+  } else {
+    fb.innerHTML = `<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:12px 16px;color:#fcd34d;font-size:0.875rem;">Please type your answer before submitting.</div>`;
+  }
+}
+</script>
+</body>
+</html>
