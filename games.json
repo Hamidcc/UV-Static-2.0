@@ -62,5 +62,13 @@
     "icon": "/i/adofai.png",
     "file": "assets/allgames/a-dance-of-fire-ice",
     "author": "https://fizzd.itch.io/a-dance-of-fire-and-ice"
+  },
+  {
+    "id": 9,
+    "title": "Drive Mad",
+    "description": "Drive Mad is a driving game where you navigate the car through tricky tracks to reach the finish and conquer 100 levels.",
+    "icon": "/i/dm.png",
+    "file": "assets/allgames/drive-mad",
+    "author": "https://jaktoes.itch.io/drive-mad"
   }
 ]
