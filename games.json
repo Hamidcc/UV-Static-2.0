@@ -4,55 +4,63 @@
     "title": "Deepest Sword",
     "description": "Venture deep into the Cavern of Longing. Plunge your sword deep into the dragon's heart! How deep is your resolve?",
     "icon": "/i/ds.png",
-    "file": "/g/deep/"
+    "file": "/g/deep/",
+    "author": "https://cosmicadventuresquad.itch.io/deepest-sword"
   },
   {
     "id": 2,
     "title": "Help! No Brakes",
     "description": "Race through a series of levels without the option to brake! Can you do it?",
     "icon": "/i/hnb.png",
-    "file": "/b.html"
+    "file": "/b.html",
+    "author": "https://edgarmendoza.itch.io/help-no-brake"
   },
   {
     "id": 3,
     "title": "Admin",
     "description": "The entire office forgot their passwords! Can you crack them?",
     "icon": "/i/a.png",
-    "file": "/g/admin/"
+    "file": "/g/admin/",
+    "author": "https://jbodah.itch.io/admin-play"
   },
   {
     "id": 4,
     "title": "CaptchaWare",
     "description": "CaptchaWare is a game where you complete captchas in quick succession!",
     "icon": "/i/cw.png",
-    "file": "/g/captcha/"
+    "file": "/g/captcha/",
+    "author": "https://paperhatprojects.itch.io/captchaware"
   },
   {
     "id": 5,
     "title": "Slope",
     "description": "Slope Game is a fast-paced, 'endless runner' style game where you control a ball rolling down a never-ending slope.",
     "icon": "/i/s.png",
-    "file": "assets/allgames/slope"
+    "file": "assets/allgames/slope",
+    "author": "https://mini-chow.itch.io/slope"
   },
   {
     "id": 6,
     "title": "Subway Surfers",
     "description": "Subway Surfers is a 2012 endless runner mobile game which is co-developed by Kiloo and SYBO Games",
     "icon": "/i/ss.png",
-    "file": "assets/allgames/subway-surfersSP"
+    "file": "assets/allgames/subway-surfersSP",
+    "author": "https://thirstythirsty3.itch.io/subway-surfers"
   },
   {
     "id": 7,
     "title": "Don't Stare",
     "description": "See how many rejections you can rack up in 20 seconds...",
     "icon": "/i/ds1.png",
-    "file": "assets/allgames/dontstare"
+    "file": "assets/allgames/dontstare",
+    "author": "https://gabemcarvalho.itch.io/dont-stare"
   },
   {
     "id": 8,
     "title": "A dance of fire and ice",
     "description": "A Dance of Fire and Ice is a simple one-button rhythm game. Press on every beat of the music to move in a line. Every pattern has its own rhythm to it. It can get difficult. This game is purely based on rhythm, so use your ears more than your sight.",
     "icon": "/i/adofai.png",
-    "file": "assets/allgames/a-dance-of-fire-ice"
+    "file": "assets/allgames/a-dance-of-fire-ice",
+    "author": "https://fizzd.itch.io/a-dance-of-fire-and-ice"
   }
 ]
