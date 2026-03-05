@@ -205,11 +205,40 @@ if(!document.cookie.includes("authorized=1")){
 function toggleSettings(){
   document.getElementById("settingsPanel").classList.toggle("active");
 }
+function setTheme(theme) {
+    document.body.className = "";
+    if (theme !== "dark") document.body.classList.add(theme);
+    localStorage.setItem("theme", theme);
+}
 
-function setTheme(theme){ document.body.className = ""; if(theme !== "dark") document.body.classList.add(theme); localStorage.setItem("theme", theme); } function setCustomBackground(e){ const file = e.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = function(){ document.body.style.backgroundImage = url(${reader.result}); localStorage.setItem("customBg", reader.result); }; reader.readAsDataURL(file); } function clearBackground(){ document.body.style.backgroundImage = ""; localStorage.removeItem("customBg"); } (function loadSettings(){ const theme = localStorage.getItem("theme"); const bg = localStorage.getItem("customBg"); if(theme) setTheme(theme); if(bg) document.body.style.backgroundImage = url(${bg}); })();
+function setCustomBackground(e) {
+    const file = e.target.files[0];
+    if (!file) return;
 
-function closeSettings(){
-  document.getElementById("settingsPanel").classList.remove("active");
+    const reader = new FileReader();
+    reader.onload = function () {
+        const imageUrl = `url(${reader.result})`;
+        document.body.style.backgroundImage = imageUrl;
+        localStorage.setItem("customBg", reader.result);
+    };
+    reader.readAsDataURL(file);
+}
+
+function clearBackground() {
+    document.body.style.backgroundImage = "";
+    localStorage.removeItem("customBg");
+}
+
+(function loadSettings() {
+    const theme = localStorage.getItem("theme");
+    const bg = localStorage.getItem("customBg");
+
+    if (theme) setTheme(theme);
+    if (bg) document.body.style.backgroundImage = `url(${bg})`;
+})();
+
+function closeSettings() {
+    document.getElementById("settingsPanel").classList.remove("active");
 }
 const GAMES=[];
 
