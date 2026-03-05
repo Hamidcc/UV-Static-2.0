@@ -4,134 +4,339 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UltraLearn | Educate</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:Inter,system-ui;
-  background:#111;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  transition:background .3s ease,color .3s ease;
-  background-size:cover;
-  background-position:center;
-}
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:16px 24px;
-  background:#181818;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.topbar button{
-  background:#222;
-  color:#fff;
-  border:1px solid rgba(255,255,255,.15);
-  padding:8px 12px;
-  border-radius:6px;
-  cursor:pointer;
-}
-.container{
-  flex:1;
-  padding:24px;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-.credits{
-  background:#1b1b1b;
-  padding:16px;
-  border-radius:8px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.credit-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-size:14px;
-}
-.credit-row img{
-  width:22px;
-  height:22px;
-}
-.iframe-wrap{
-  flex:1;
-  background:#000;
-  border-radius:8px;
-  overflow:hidden;
-  position:relative;
-}
-iframe{
-  width:100%;
-  height:100%;
-  border:none;
-}
-.description{
-  background:#1b1b1b;
-  padding:16px;
-  border-radius:8px;
-  font-size:14px;
-  line-height:1.6;
-}
-.settings-panel{
-  position:fixed;
-  top:0;
-  right:-320px;
-  width:300px;
-  height:100%;
-  background:#181818;
-  padding:20px;
-  transition:right .3s ease;
-  z-index:1000;
-}
-.settings-panel.active{right:0}
-.theme-btn{
-  display:block;
-  width:100%;
-  margin-bottom:10px;
-  padding:10px;
-  border:none;
-  cursor:pointer;
-  border-radius:6px;
-}
-.light{background:#f4f4f4;color:#111}
-.light .topbar{background:#fff;color:#111}
-.blue{background:#0f172a}
-.green{background:#062e1f}
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c27;
+    --border: rgba(255,255,255,0.07);
+    --accent: #6c63ff;
+    --accent2: #ff6b6b;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s, color 0.3s;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 28px;
+    height: 60px;
+    background: rgba(10,10,15,0.85);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    user-select: none;
+  }
+
+  .topbar-right {
+    display: flex;
+    gap: 8px;
+  }
+
+  .icon-btn {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0 14px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .icon-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 28px 32px;
+    gap: 20px;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* ── GAME FRAME ── */
+  .game-wrap {
+    width: 100%;
+    /* 16:9 aspect ratio but fills most of viewport height */
+    aspect-ratio: 16 / 9;
+    max-height: calc(100vh - 180px);
+    background: #000;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 60px rgba(108,99,255,0.12);
+    position: relative;
+  }
+
+  .game-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* ── BOTTOM ROW ── */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 700px) {
+    .bottom-row { grid-template-columns: 1fr; }
+    .page { padding: 14px 14px 24px; }
+  }
+
+  /* ── CREDITS ── */
+  .credits-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .credits-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .credit-source {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .credit-source img {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    opacity: 0.85;
+  }
+
+  .credit-source span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .credit-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .credit-author {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── DESCRIPTION ── */
+  .description-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #b0b0c8;
+  }
+
+  .description-card .desc-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  /* ── SETTINGS PANEL ── */
+  .settings-panel {
+    position: fixed;
+    top: 0;
+    right: -340px;
+    width: 300px;
+    height: 100%;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding: 24px 20px;
+    transition: right 0.3s cubic-bezier(.4,0,.2,1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .settings-panel.active { right: 0; }
+
+  .settings-panel h3 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .theme-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .theme-btn:hover { border-color: var(--accent); background: rgba(108,99,255,0.12); }
+
+  .settings-panel hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 6px 0;
+  }
+
+  input[type=file] {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    width: 100%;
+  }
+
+  /* ── THEMES ── */
+  body.light {
+    --bg: #f0f0f5;
+    --surface: #fff;
+    --surface2: #e8e8f0;
+    --border: rgba(0,0,0,0.08);
+    --text: #111;
+    --muted: #888;
+    --accent: #5a52e0;
+  }
+
+  body.blue {
+    --bg: #050e1f;
+    --surface: #0a1628;
+    --surface2: #0f1f38;
+    --accent: #38bdf8;
+  }
+
+  body.green {
+    --bg: #040f08;
+    --surface: #081a0d;
+    --surface2: #0d2614;
+    --accent: #34d399;
+  }
+
+  body.purple {
+    --bg: #0d0916;
+    --surface: #160f24;
+    --surface2: #1e1434;
+    --accent: #c084fc;
+  }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <button onclick="goBack()">← Back</button>
-  <div>
-    <button onclick="toggleSettings()">⚙</button>
-    <button onclick="goFullscreen()">⛶</button>
+  <div style="display:flex;align-items:center;gap:18px;">
+    <button class="icon-btn" onclick="goBack()">← Back</button>
+    <span class="logo">UltraLearn</span>
+  </div>
+  <div class="topbar-right">
+    <button class="icon-btn" onclick="toggleSettings()">⚙ Settings</button>
+    <button class="icon-btn" onclick="goFullscreen()">⛶ Fullscreen</button>
   </div>
 </div>
 
-<div class="container">
-  <div class="credits" id="credits"></div>
-  <div class="iframe-wrap">
-    <iframe id="gameFrame"></iframe>
+<div class="page">
+  <div class="game-wrap">
+    <iframe id="gameFrame" allowfullscreen></iframe>
   </div>
-  <div class="description" id="description"></div>
+
+  <div class="bottom-row">
+    <div class="credits-card" id="credits"></div>
+    <div class="description-card">
+      <div class="desc-label">About this game</div>
+      <div id="description"></div>
+    </div>
+  </div>
 </div>
 
 <div class="settings-panel" id="settingsPanel">
-  <h3 style="margin-bottom:15px;">Appearance</h3>
-  <button class="theme-btn" onclick="setTheme('dark')">Dark</button>
-  <button class="theme-btn" onclick="setTheme('light')">Light</button>
-  <button class="theme-btn" onclick="setTheme('blue')">Blue</button>
-  <button class="theme-btn" onclick="setTheme('green')">Green</button>
-  <hr style="margin:20px 0;border:0;border-top:1px solid #333">
+  <h3>Theme</h3>
+  <button class="theme-btn" onclick="setTheme('dark')">🌑 Dark</button>
+  <button class="theme-btn" onclick="setTheme('light')">☀️ Light</button>
+  <button class="theme-btn" onclick="setTheme('blue')">🌊 Ocean Blue</button>
+  <button class="theme-btn" onclick="setTheme('green')">🌿 Forest</button>
+  <button class="theme-btn" onclick="setTheme('purple')">🔮 Purple</button>
+  <hr>
+  <h3>Background Image</h3>
   <input type="file" accept="image/*" onchange="setCustomBackground(event)">
-  <button class="theme-btn" onclick="clearBackground()">Remove Background</button>
+  <button class="theme-btn" onclick="clearBackground()">✕ Remove Background</button>
 </div>
 
 <script>
@@ -139,46 +344,44 @@ if(!document.cookie.includes("authorized=1")){
   location.href="welcome.html";
 }
 
-function goBack(){
-  history.back();
-}
+function goBack(){ history.back(); }
 
 function toggleSettings(){
   document.getElementById("settingsPanel").classList.toggle("active");
 }
 
 function goFullscreen(){
-  const iframe=document.getElementById("gameFrame");
+  const iframe = document.getElementById("gameFrame");
   if(iframe.requestFullscreen) iframe.requestFullscreen();
 }
 
 function setTheme(theme){
-  document.body.className="";
-  if(theme!=="dark") document.body.classList.add(theme);
-  localStorage.setItem("theme",theme);
+  document.body.className = "";
+  if(theme !== "dark") document.body.classList.add(theme);
+  localStorage.setItem("theme", theme);
 }
 
 function setCustomBackground(e){
-  const file=e.target.files[0];
+  const file = e.target.files[0];
   if(!file) return;
-  const reader=new FileReader();
-  reader.onload=function(){
-    document.body.style.backgroundImage=`url(${reader.result})`;
-    localStorage.setItem("customBg",reader.result);
+  const reader = new FileReader();
+  reader.onload = function(){
+    document.body.style.backgroundImage = `url(${reader.result})`;
+    localStorage.setItem("customBg", reader.result);
   };
   reader.readAsDataURL(file);
 }
 
 function clearBackground(){
-  document.body.style.backgroundImage="";
+  document.body.style.backgroundImage = "";
   localStorage.removeItem("customBg");
 }
 
 (function loadSettings(){
-  const theme=localStorage.getItem("theme");
-  const bg=localStorage.getItem("customBg");
+  const theme = localStorage.getItem("theme");
+  const bg = localStorage.getItem("customBg");
   if(theme) setTheme(theme);
-  if(bg) document.body.style.backgroundImage=`url(${bg})`;
+  if(bg) document.body.style.backgroundImage = `url(${bg})`;
 })();
 
 function getParam(name){
@@ -186,31 +389,31 @@ function getParam(name){
 }
 
 (async function init(){
-  const id=getParam("id");
-  if(!id) return location.href="index.html";
-  let games=[];
-  try{
-    const r=await fetch("./games.json");
-    if(r.ok) games=await r.json();
-  }catch{}
-  const game=games.find(g=>String(g.id)===String(id));
-  if(!game) return location.href="index.html";
+  const id = getParam("id");
+  if(!id) return location.href = "index.html";
+  let games = [];
+  try {
+    const r = await fetch("./games.json");
+    if(r.ok) games = await r.json();
+  } catch{}
+  const game = games.find(g => String(g.id) === String(id));
+  if(!game) return location.href = "index.html";
 
-  document.getElementById("gameFrame").src=game.file||"";
+  document.getElementById("gameFrame").src = game.file || "";
 
-  const credits=document.getElementById("credits");
-  credits.innerHTML=`
-    <strong>Credits:</strong>
-    <div class="credit-row">
-      <img src="data:image/png;base64,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">
-      <span>Itch.io</span>
+  document.getElementById("credits").innerHTML = `
+    <div class="credits-label">Credits</div>
+    <div class="credit-title" id="gameTitle">${game.title || "Untitled"}</div>
+    <div class="credit-author">by ${game.author || "Unknown Author"}</div>
+    <div class="divider"></div>
+    <div class="credit-source">
+      <img src="data:image/png;base64,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">
+      <span>Sourced from Itch.io</span>
     </div>
-    <div class="credit-row">
-      <span><strong>${game.title}</strong> has been brought to you from <strong>${game.author||"Unknown"}</strong>. Thank you to the authors who made this project.</span>
-    </div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.5;">Thank you to the creators who made this possible.</div>
   `;
 
-  document.getElementById("description").textContent=game.description||"";
+  document.getElementById("description").textContent = game.description || "No description available.";
 })();
 </script>
 
