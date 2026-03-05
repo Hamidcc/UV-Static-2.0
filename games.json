@@ -33,5 +33,19 @@
     "description": "Slope Game is a fast-paced, 'endless runner' style game where you control a ball rolling down a never-ending slope.",
     "icon": "/i/s.png",
     "file": "assets/allgames/slope"
+  },
+  {
+    "id": 6,
+    "title": "Subway Surfers",
+    "description": "Subway Surfers is a 2012 endless runner mobile game which is co-developed by Kiloo and SYBO Games",
+    "icon": "/i/ss.png",
+    "file": "assets/allgames/subway-surfersSP"
+  },
+  {
+    "id": 7,
+    "title": "Don't Stare",
+    "description": "See how many rejections you can rack up in 20 seconds..",
+    "icon": "/i/ds1.png",
+    "file": "assets/allgames/dontstare"
   }
 ]
