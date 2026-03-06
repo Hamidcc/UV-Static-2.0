@@ -36,7 +36,7 @@
     "title": "Slope",
     "description": "Slope Game is a fast-paced, 'endless runner' style game where you control a ball rolling down a never-ending slope.",
     "icon": "/i/s.png",
-    "file": "assets/allgames/slope",
+    "file": "assets/allgames/slope1",
     "author": "https://mini-chow.itch.io/slope"
   },
   {
@@ -44,7 +44,7 @@
     "title": "Subway Surfers",
     "description": "Subway Surfers is a 2012 endless runner mobile game which is co-developed by Kiloo and SYBO Games",
     "icon": "/i/ss.png",
-    "file": "assets/allgames/subway-surfersSP",
+    "file": "assets/allgames/subway-surfersSP1",
     "author": "https://thirstythirsty3.itch.io/subway-surfers"
   },
   {
@@ -78,5 +78,13 @@
     "icon": "/i/stc.png",
     "file": "assets/allgames/sort",
     "author": "https://graebor.itch.io/sort-the-court"
+  },
+  {
+    "id": 11,
+    "title": "Cluster-Rush",
+    "description": "Thrilling truck-jumping challenges",
+    "icon": "/i/cr.png",
+    "file": "g/cluster",
+    "author": "https://kuram-halasah.itch.io/truck"
   }
 ]
