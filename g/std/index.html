@@ -1,15 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="title" content="Ruffle Example">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="language" content="English">
+  <title>Ruffle Example</title>
+  <noscript>Your browser doesn't have JavaScript enabled. Please enable JavaScript or switch to a browser that supports it.</noscript>
 </head>
 <body>
+  <div id="ruffle" class="gameloc"></div>
+  <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+  <script>
+    var swfobject = {};
+    swfobject.embedSWF = function(url, cont, width, height) {
+      window.addEventListener("load", function () {
+        var ruffle = window.RufflePlayer.newest();
+        var player = ruffle.createPlayer();
+        player.style.width = width + "px";
+        player.style.height = height + "px";
+        document.getElementById(cont).appendChild(player);
+        player.load({ url: url });
+      });
+    };
 
-<ruffle-player
-    src="stealing_the_diamond.swf"
-    style="width:100vw;height:100vh;">
-</ruffle-player>
-
+    swfobject.embedSWF("stealing_the_diamond.swf", "ruffle", 800, 600);
+  </script>
 </body>
 </html>
