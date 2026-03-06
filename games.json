@@ -102,5 +102,381 @@
     "icon": "/i/std.png",
     "file": "g/std",
     "author": "https://streamly-games.itch.io/the-henry-stickmin-collection-spanish-translation-mod/devlog/179676/stealing-the-diamond-110"
+  },
+  {
+    "id": 14,
+    "title": "2048",
+    "description": "Slide numbered tiles on a grid and combine them to reach 2048.",
+    "icon": "/i/2048.png",
+    "file": "/g/2048/",
+    "author": "https://gabrielecirulli.itch.io/2048"
+  },
+  {
+    "id": 15,
+    "title": "A Dark Room",
+    "description": "A minimalist text-based survival and resource management game.",
+    "icon": "/i/adarkroom.png",
+    "file": "/g/adarkroom/",
+    "author": "https://adarkroom.doublespeakgames.com"
+  },
+  {
+    "id": 16,
+    "title": "ASCII Space",
+    "description": "Explore a retro ASCII-styled universe filled with simple space mechanics.",
+    "icon": "/i/asciispace.png",
+    "file": "/g/asciispace/",
+    "author": "https://joshmillard.itch.io"
+  },
+  {
+    "id": 17,
+    "title": "Asteroids",
+    "description": "Classic arcade space shooter where you destroy drifting asteroids.",
+    "icon": "/i/asteroids.png",
+    "file": "/g/asteroids/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 18,
+    "title": "Astray",
+    "description": "Navigate a 3D maze as quickly as possible and find the exit.",
+    "icon": "/i/astray.png",
+    "file": "/g/astray/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 19,
+    "title": "Backcountry",
+    "description": "A minimalist exploration experience set in a wilderness environment.",
+    "icon": "/i/backcountry.png",
+    "file": "/g/backcountry/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 20,
+    "title": "Black Hole Square",
+    "description": "Arcade-style action game about surviving gravity and obstacles.",
+    "icon": "/i/blackholesquare.png",
+    "file": "/g/blackholesquare/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 21,
+    "title": "Bounce Back",
+    "description": "Control a bouncing object and survive increasingly difficult obstacles.",
+    "icon": "/i/bounceback.png",
+    "file": "/g/bounceback/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 22,
+    "title": "Breaklock",
+    "description": "Puzzle game focused on unlocking systems through logic mechanics.",
+    "icon": "/i/breaklock.png",
+    "file": "/g/breaklock/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 23,
+    "title": "Breakout",
+    "description": "Classic brick-breaking arcade game using a paddle and ball.",
+    "icon": "/i/breakout.png",
+    "file": "/g/breakout/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 24,
+    "title": "Captain Callisto",
+    "description": "Retro-styled arcade platformer with space exploration themes.",
+    "icon": "/i/captaincallisto.png",
+    "file": "/g/captaincallisto/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 25,
+    "title": "Chess",
+    "description": "Traditional chess with standard rules against an AI opponent.",
+    "icon": "/i/chess.png",
+    "file": "/g/chess/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 26,
+    "title": "Chroma Incident",
+    "description": "Puzzle experience centered around colors and spatial logic.",
+    "icon": "/i/chromaincident.png",
+    "file": "/g/chromaincident/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 27,
+    "title": "Chrome Dino",
+    "description": "Endless runner where a dinosaur jumps over obstacles in a desert.",
+    "icon": "/i/chromedino.png",
+    "file": "/g/chromedino/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 28,
+    "title": "Connect 3",
+    "description": "Match three tiles in a row to clear them and score points.",
+    "icon": "/i/connect3.png",
+    "file": "/g/connect3/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 29,
+    "title": "Cookie Clicker",
+    "description": "Incremental idle game focused on producing infinite cookies.",
+    "icon": "/i/cookieclicker.png",
+    "file": "/g/cookieclicker/",
+    "author": "https://orteil.itch.io"
+  },
+  {
+    "id": 30,
+    "title": "Edge Not Found",
+    "description": "Abstract arcade game involving quick reflexes and precise movement.",
+    "icon": "/i/edgenotfound.png",
+    "file": "/g/edgenotfound/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 31,
+    "title": "Evil Glitch",
+    "description": "Fast-paced shooter where you fight waves of corrupted enemies.",
+    "icon": "/i/evilglitch.png",
+    "file": "/g/evilglitch/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 32,
+    "title": "Factory Balls Forever",
+    "description": "Puzzle game where you craft specific ball designs using tools.",
+    "icon": "/i/factoryballsforever.png",
+    "file": "/g/factoryballsforever/",
+    "author": "https://bontegames.itch.io"
+  },
+  {
+    "id": 33,
+    "title": "Flappy Bird",
+    "description": "Tap to keep the bird airborne while navigating through pipes.",
+    "icon": "/i/flappybird.png",
+    "file": "/g/flappybird/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 34,
+    "title": "Geometry Dash",
+    "description": "Rhythm-based platformer where timing and precision are essential.",
+    "icon": "/i/geometrydash.png",
+    "file": "/g/geometrydash/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 35,
+    "title": "Hextris",
+    "description": "Fast-paced hexagonal puzzle game inspired by Tetris mechanics.",
+    "icon": "/i/hextris.png",
+    "file": "/g/hextris/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 36,
+    "title": "Konnekt",
+    "description": "Minimalist puzzle game about connecting nodes efficiently.",
+    "icon": "/i/konnekt.png",
+    "file": "/g/konnekt/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 37,
+    "title": "Minecraft",
+    "description": "Sandbox building game focused on exploration, crafting, and survival.",
+    "icon": "/i/minecraft.png",
+    "file": "/g/minecraft/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 38,
+    "title": "Ninja vs Evil Corp",
+    "description": "Action platformer where a ninja infiltrates a corrupt corporation.",
+    "icon": "/i/ninjavsevilcorp.png",
+    "file": "/g/ninjavsevilcorp/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 39,
+    "title": "Packabunchas",
+    "description": "Arcade puzzle game about managing groups of moving objects.",
+    "icon": "/i/packabunchas.png",
+    "file": "/g/packabunchas/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 40,
+    "title": "Pacman",
+    "description": "Classic maze arcade game about eating pellets while avoiding ghosts.",
+    "icon": "/i/pacman.png",
+    "file": "/g/pacman/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 41,
+    "title": "Particle Clicker",
+    "description": "Idle game about building a particle physics research lab.",
+    "icon": "/i/particleclicker.png",
+    "file": "/g/particleclicker/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 42,
+    "title": "Pushback",
+    "description": "Puzzle-platformer where timing and positioning solve challenges.",
+    "icon": "/i/pushback.png",
+    "file": "/g/pushback/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 43,
+    "title": "Q1K3",
+    "description": "Tiny retro FPS inspired by classic arena shooters.",
+    "icon": "/i/q1k3.png",
+    "file": "/g/q1k3/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 44,
+    "title": "Racer",
+    "description": "Simple browser racing game focused on speed and reflexes.",
+    "icon": "/i/racer.png",
+    "file": "/g/racer/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 45,
+    "title": "Radius Raid",
+    "description": "Arcade shooter with circular arenas and fast combat.",
+    "icon": "/i/radiusraid.png",
+    "file": "/g/radiusraid/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 46,
+    "title": "Retro Haunt",
+    "description": "Retro horror-themed arcade experience.",
+    "icon": "/i/retrohaunt.png",
+    "file": "/g/retrohaunt/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 47,
+    "title": "Roadblocks",
+    "description": "Puzzle game where you redirect movement through obstacles.",
+    "icon": "/i/roadblocks.png",
+    "file": "/g/roadblocks/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 48,
+    "title": "Run 3",
+    "description": "Endless runner through space tunnels with gravity-defying mechanics.",
+    "icon": "/i/run3.png",
+    "file": "/g/run3/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 49,
+    "title": "Shuttle Deck",
+    "description": "Space-themed card strategy game.",
+    "icon": "/i/shuttledeck.png",
+    "file": "/g/shuttledeck/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 50,
+    "title": "Sleeping Beauty",
+    "description": "Interactive story inspired by the classic fairy tale.",
+    "icon": "/i/sleepingbeauty.png",
+    "file": "/g/sleepingbeauty/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 51,
+    "title": "Snake",
+    "description": "Classic snake arcade game where the snake grows as it eats.",
+    "icon": "/i/snake.png",
+    "file": "/g/snake/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 52,
+    "title": "Space Company",
+    "description": "Idle resource management game about building a space industry.",
+    "icon": "/i/spacecompany.png",
+    "file": "/g/spacecompany/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 53,
+    "title": "Space Garden",
+    "description": "Relaxing incremental game about growing a garden in space.",
+    "icon": "/i/spacegarden.png",
+    "file": "/g/spacegarden/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 54,
+    "title": "Space Huggers",
+    "description": "Action platform shooter with retro visuals and physics chaos.",
+    "icon": "/i/spacehuggers.png",
+    "file": "/g/spacehuggers/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 55,
+    "title": "Tetris",
+    "description": "Classic falling-block puzzle game.",
+    "icon": "/i/tetris.png",
+    "file": "/g/tetris/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 56,
+    "title": "The Maze of Space Goblins",
+    "description": "Retro dungeon maze adventure filled with goblins.",
+    "icon": "/i/themazeofspacegoblins.png",
+    "file": "/g/themazeofspacegoblins/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 57,
+    "title": "Tower Master",
+    "description": "Arcade stacking game about building the tallest tower possible.",
+    "icon": "/i/towermaster.png",
+    "file": "/g/towermaster/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 58,
+    "title": "Trimps",
+    "description": "Idle strategy game about managing a civilization of Trimps.",
+    "icon": "/i/trimps.png",
+    "file": "/g/trimps/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 59,
+    "title": "Underrun",
+    "description": "Fast arcade game focused on quick reaction and movement.",
+    "icon": "/i/underrun.png",
+    "file": "/g/underrun/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 60,
+    "title": "XX142-B2EXE",
+    "description": "Experimental retro-style arcade shooter experience.",
+    "icon": "/i/xx142-b2exe.png",
+    "file": "/g/xx142-b2exe/",
+    "author": "https://itch.io"
   }
 ]
