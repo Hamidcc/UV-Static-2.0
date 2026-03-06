@@ -86,5 +86,13 @@
     "icon": "/i/cr.png",
     "file": "g/cluster",
     "author": "https://kuram-halasah.itch.io/truck"
+  },
+  {
+    "id": 12,
+    "title": "Kart Bros",
+    "description": "Kart Bros is a simple, fast-paced kart racing game that's incredibly easy to pick up, yet packed with wild antics!",
+    "icon": "/i/kb.png",
+    "file": "g/kartbros.io",
+    "author": "https://bakadan.itch.io/chaos-kart"
   }
 ]
