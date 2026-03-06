@@ -94,5 +94,13 @@
     "icon": "/i/kb.png",
     "file": "g/kartbros.io",
     "author": "https://bakadan.itch.io/chaos-kart"
+  },
+  {
+    "id": 13,
+    "title": "Stealing The Diamond",
+    "description": "The sequel to Escaping the Prison! This time you're back on the offense. The Tunisian Diamond is on display in the museum, and it's quite expensive.",
+    "icon": "/i/std.png",
+    "file": "g/std",
+    "author": "https://streamly-games.itch.io/the-henry-stickmin-collection-spanish-translation-mod/devlog/179676/stealing-the-diamond-110"
   }
 ]
