@@ -7,6 +7,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
+#particleCanvas{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
+
+#particleCanvas{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+}
+
 body{
   font-family:Inter,system-ui;
   background:#111;
@@ -15,7 +29,10 @@ body{
   transition:background .3s ease,color .3s ease;
   background-size:cover;
   background-position:center;
+  position:relative;
+  z-index:1;
 }
+
 header{
   padding:28px 56px;
   display:flex;
@@ -24,7 +41,9 @@ header{
   gap:16px;
   border-bottom:1px solid rgba(255,255,255,0.06);
 }
+
 .search{width:100%;max-width:720px;}
+
 .search input{
   width:100%;
   padding:14px 18px;
@@ -35,7 +54,9 @@ header{
   color:#fff;
   outline:none;
 }
+
 .search input:focus{border-color:#E50914}
+
 .settings-btn{
   position:fixed;
   top:20px;
@@ -46,7 +67,9 @@ header{
   color:#fff;
   cursor:pointer;
   border-radius:6px;
+  z-index:5;
 }
+
 .settings-panel{
   position:fixed;
   top:0;
@@ -59,24 +82,19 @@ header{
   z-index:1000;
   overflow-y:auto;
 }
+
 .settings-panel.active{right:0}
-.settings-panel h2{margin-bottom:18px;font-size:18px}
-.theme-btn{
-  display:block;
-  width:100%;
-  margin-bottom:10px;
-  padding:10px;
-  border:none;
-  cursor:pointer;
-  border-radius:6px;
-}
-main{padding:48px 56px 80px}
+
+main{padding:48px 56px 80px;position:relative;z-index:2}
+
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
   gap:26px;
 }
+
 .card{cursor:pointer}
+
 .card-img{
   position:relative;
   width:100%;
@@ -85,12 +103,14 @@ main{padding:48px 56px 80px}
   overflow:hidden;
   background:#1f1f1f;
 }
+
 .card-img img{
   width:100%;
   height:100%;
   object-fit:cover;
   transition:transform .35s ease, filter .35s ease;
 }
+
 .card-overlay{
   position:absolute;
   inset:0;
@@ -101,6 +121,7 @@ main{padding:48px 56px 80px}
   align-items:flex-end;
   transition:opacity .3s ease;
 }
+
 .card-title{
   margin-top:12px;
   font-size:14px;
@@ -109,80 +130,44 @@ main{padding:48px 56px 80px}
   transform:translateY(-6px);
   transition:opacity .25s ease, transform .25s ease;
 }
+
 .card:hover img{
   transform:scale(1.05);
   filter:brightness(.4);
 }
+
 .card:hover .card-overlay{opacity:1}
+
 .card:hover .card-title{
   opacity:1;
   transform:translateY(0);
 }
+
 .empty{
   text-align:center;
   padding:80px 0;
   color:#666;
 }
-.light{
-  background:#f4f4f4;
-  color:#111;
-}
-.light .search input{
-  background:#fff;
-  color:#111;
-}
+
+.light{background:#f4f4f4;color:#111}
+.light .search input{background:#fff;color:#111}
 .blue{background:#0f172a}
 .green{background:#062e1f}
-
-  .settings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.close-settings {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  color: var(--text);
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s, border-color 0.15s;
-}
-
-.close-settings:hover {
-  background: var(--accent2);
-  border-color: var(--accent2);
-  color: #fff;
-}
 </style>
 </head>
+
 <body>
+
+<canvas id="particleCanvas"></canvas>
 
 <button class="settings-btn" onclick="toggleSettings()">⚙</button>
 
 <div class="settings-panel" id="settingsPanel">
-  <div class="settings-header">
-    <h3>Settings</h3>
-    <button class="close-settings" onclick="closeSettings()">✕</button>
-  </div>
-
   <h3>Theme</h3>
   <button class="theme-btn" onclick="setTheme('dark')">Dark</button>
   <button class="theme-btn" onclick="setTheme('light')">Light</button>
   <button class="theme-btn" onclick="setTheme('blue')">Ocean Blue</button>
   <button class="theme-btn" onclick="setTheme('green')">Forest</button>
-  <button class="theme-btn" onclick="setTheme('purple')">Purple</button>
-  <hr>
-  <h3>Background Image</h3>
-  <input type="file" accept="image/*" onchange="setCustomBackground(event)">
-  <button class="theme-btn" onclick="clearBackground()">✕ Remove Background</button>
 </div>
 
 <header>
@@ -197,7 +182,7 @@ main{padding:48px 56px 80px}
   <div class="empty" id="empty" style="display:none;">No games found.</div>
 </main>
 
-<script>
+  <script>
 if(!document.cookie.includes("authorized=1")){
   location.href="welcome.html";
 }
@@ -305,6 +290,256 @@ document.getElementById("search").addEventListener("input",e=>{
   window.GAMES=games;
   render(games);
 })();
+</script>
+<script>
+var canvas = document.getElementById('particleCanvas');
+var ctx = canvas.getContext('2d');
+var mouseX = -1000;
+var mouseY = -1000;
+var mouseDown = false;
+var mouseOnPage = false;
+var WAVE_LAYERS = 5;
+var MOUSE_RADIUS = 200;
+var time = 0;
+var ripples = [];
+var shapes = [];
+var shapeTypes = ['triangle', 'square', 'diamond', 'pentagon', 'hexagon', 'star', 'cross', 'circle'];
+
+function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+document.addEventListener('mouseenter', function(){ mouseOnPage = true; });
+document.addEventListener('mouseleave', function(){ mouseOnPage = false; mouseDown = false; });
+document.addEventListener('mousemove', function(e){ mouseX = e.clientX; mouseY = e.clientY; mouseOnPage = true; });
+window.addEventListener('mousedown', function(){ mouseDown = true; });
+window.addEventListener('mouseup', function(){ mouseDown = false; });
+window.addEventListener('touchstart', function(e){ mouseDown = true; mouseOnPage = true; mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; }, { passive: true });
+window.addEventListener('touchmove', function(e){ mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY; mouseOnPage = true; }, { passive: true });
+window.addEventListener('touchend', function(){ mouseDown = false; mouseOnPage = false; });
+window.addEventListener('touchcancel', function(){ mouseDown = false; mouseOnPage = false; });
+
+function getDotColor(){
+  var style = getComputedStyle(document.documentElement).getPropertyValue('--dot-color') || '';
+  style = style.trim();
+  return style ? style : '255,255,255';
+}
+
+function createShape(x,y){
+  var angle = Math.random() * Math.PI * 2;
+  var speed = 3 + Math.random() * 5;
+  var type = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+  var size = 4 + Math.random() * 8;
+  var rotation = Math.random() * Math.PI * 2;
+  var rotationSpeed = (Math.random() - 0.5) * 0.12;
+  shapes.push({
+    x: x, y: y,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed - 3,
+    gravity: 0.15,
+    size: size,
+    type: type,
+    rotation: rotation,
+    rotationSpeed: rotationSpeed,
+    life: 1,
+    decay: 0.012 + Math.random() * 0.006,
+    scale: 0,
+    targetScale: 1
+  });
+}
+
+function drawShape(shape, dotColor){
+  ctx.save();
+  ctx.translate(shape.x, shape.y);
+  ctx.rotate(shape.rotation);
+  ctx.scale(shape.scale, shape.scale);
+  ctx.beginPath();
+  var s = shape.size;
+  if (shape.type === 'triangle') {
+    ctx.moveTo(0, -s);
+    ctx.lineTo(-s * 0.866, s * 0.5);
+    ctx.lineTo(s * 0.866, s * 0.5);
+    ctx.closePath();
+  } else if (shape.type === 'square') {
+    ctx.rect(-s * 0.7, -s * 0.7, s * 1.4, s * 1.4);
+  } else if (shape.type === 'diamond') {
+    ctx.moveTo(0, -s);
+    ctx.lineTo(s * 0.6, 0);
+    ctx.lineTo(0, s);
+    ctx.lineTo(-s * 0.6, 0);
+    ctx.closePath();
+  } else if (shape.type === 'pentagon') {
+    for (var i = 0; i < 5; i++) {
+      var a = (i * 2 * Math.PI / 5) - Math.PI / 2;
+      if (i === 0) ctx.moveTo(Math.cos(a) * s, Math.sin(a) * s);
+      else ctx.lineTo(Math.cos(a) * s, Math.sin(a) * s);
+    }
+    ctx.closePath();
+  } else if (shape.type === 'hexagon') {
+    for (var i2 = 0; i2 < 6; i2++) {
+      var a2 = (i2 * 2 * Math.PI / 6) - Math.PI / 2;
+      if (i2 === 0) ctx.moveTo(Math.cos(a2) * s, Math.sin(a2) * s);
+      else ctx.lineTo(Math.cos(a2) * s, Math.sin(a2) * s);
+    }
+    ctx.closePath();
+  } else if (shape.type === 'star') {
+    for (var i3 = 0; i3 < 10; i3++) {
+      var a3 = (i3 * Math.PI / 5) - Math.PI / 2;
+      var r = (i3 % 2 === 0) ? s : s * 0.4;
+      if (i3 === 0) ctx.moveTo(Math.cos(a3) * r, Math.sin(a3) * r);
+      else ctx.lineTo(Math.cos(a3) * r, Math.sin(a3) * r);
+    }
+    ctx.closePath();
+  } else if (shape.type === 'cross') {
+    var t = s * 0.3;
+    ctx.moveTo(-t, -s); ctx.lineTo(t, -s); ctx.lineTo(t, -t);
+    ctx.lineTo(s, -t); ctx.lineTo(s, t); ctx.lineTo(t, t);
+    ctx.lineTo(t, s); ctx.lineTo(-t, s); ctx.lineTo(-t, t);
+    ctx.lineTo(-s, t); ctx.lineTo(-s, -t); ctx.lineTo(-t, -t);
+    ctx.closePath();
+  } else if (shape.type === 'circle') {
+    ctx.arc(0, 0, s * 0.7, 0, Math.PI * 2);
+  }
+  var opacity = shape.life * 0.6;
+  ctx.strokeStyle = 'rgba(' + dotColor + ', ' + opacity + ')';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+}
+
+window.addEventListener('click', function(e){
+  ripples.push({ x: e.clientX, y: e.clientY, radius: 0, maxRadius: 300, strength: 80, life: 1 });
+  var shapeCount = 3 + Math.floor(Math.random() * 4);
+  for (var i = 0; i < shapeCount; i++) createShape(e.clientX, e.clientY);
+});
+
+function getMouseDistortion(x, y){
+  var result = { dx: 0, dy: 0, factor: 0 };
+  if (!mouseOnPage) return result;
+  var dx = x - mouseX;
+  var dy = y - mouseY;
+  var dist = Math.sqrt(dx * dx + dy * dy);
+  var effectiveRadius = mouseDown ? MOUSE_RADIUS * 1.8 : MOUSE_RADIUS;
+  if (dist < effectiveRadius) {
+    var force = (1 - dist / effectiveRadius);
+    var angle = Math.atan2(dy, dx);
+    var pushDist = force * (mouseDown ? 70 : 45);
+    result.dx = Math.cos(angle) * pushDist;
+    result.dy = Math.sin(angle) * pushDist;
+    result.factor = force;
+  }
+  return result;
+}
+
+function getRippleDistortion(x, y){
+  var result = { dx: 0, dy: 0, factor: 0 };
+  for (var i = 0; i < ripples.length; i++) {
+    var rpl = ripples[i];
+    var rdx = x - rpl.x;
+    var rdy = y - rpl.y;
+    var rdist = Math.sqrt(rdx * rdx + rdy * rdy);
+    var ringDist = Math.abs(rdist - rpl.radius);
+    if (ringDist < 50) {
+      var ringForce = (1 - ringDist / 50) * rpl.life;
+      var rAngle = Math.atan2(rdy, rdx);
+      result.dx += Math.cos(rAngle) * ringForce * rpl.strength;
+      result.dy += Math.sin(rAngle) * ringForce * rpl.strength;
+      result.factor = Math.min(1, result.factor + ringForce);
+    }
+  }
+  return result;
+}
+
+function animate(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  time += 0.015;
+  var dotColor = getDotColor();
+  var w = canvas.width;
+  var h = canvas.height;
+  var step = 3;
+
+  for (var ri = ripples.length - 1; ri >= 0; ri--) {
+    ripples[ri].radius += 7;
+    ripples[ri].life -= 0.018;
+    if (ripples[ri].life <= 0 || ripples[ri].radius > ripples[ri].maxRadius) ripples.splice(ri, 1);
+  }
+
+  for (var si = shapes.length - 1; si >= 0; si--) {
+    var sh = shapes[si];
+    sh.vy += sh.gravity;
+    sh.vx *= 0.99;
+    sh.x += sh.vx;
+    sh.y += sh.vy;
+    sh.rotation += sh.rotationSpeed;
+    sh.scale += (sh.targetScale - sh.scale) * 0.2;
+    sh.life -= sh.decay;
+    if (sh.life < 0.3) sh.targetScale = 0;
+    if (sh.life <= 0) shapes.splice(si, 1);
+    else drawShape(sh, dotColor);
+  }
+
+  for (var layer = 0; layer < WAVE_LAYERS; layer++) {
+    var layerRatio = (layer + 1) / WAVE_LAYERS;
+    var baseY = h * 0.15 + (h * 0.7) * (layer / (WAVE_LAYERS - 1));
+    var amplitude1 = 30 + layer * 12;
+    var amplitude2 = 20 + layer * 8;
+    var amplitude3 = 10 + layer * 5;
+    var freq1 = 0.003 + layer * 0.0005;
+    var freq2 = 0.006 + layer * 0.0003;
+    var freq3 = 0.01 + layer * 0.0002;
+    var speed1 = time * (0.8 + layer * 0.3);
+    var speed2 = time * (1.2 + layer * 0.2);
+    var speed3 = time * (0.5 + layer * 0.15);
+    var baseOpacity = 0.04 + layerRatio * 0.08;
+    var lineWidth = 1.5 + layer * 0.3;
+    var numLines = 3 + layer;
+    for (var line = 0; line < numLines; line++) {
+      var lineOffset = (line - (numLines - 1) / 2) * (8 + layer * 3);
+      var lineOpacity = baseOpacity * (1 - Math.abs(line - (numLines - 1) / 2) / ((numLines - 1) / 2 + 1));
+      ctx.beginPath();
+      var firstPoint = true;
+      for (var x = -step; x <= w + step; x += step) {
+        var waveY = baseY + lineOffset;
+        waveY += Math.sin(x * freq1 + speed1) * amplitude1;
+        waveY += Math.cos(x * freq2 + speed2 + layer) * amplitude2;
+        waveY += Math.sin(x * freq3 + speed3 + layer * 2.5) * amplitude3;
+        waveY += Math.sin(x * 0.002 + time * 0.4) * Math.cos(time * 0.7 + layer) * 15;
+        var mouse = getMouseDistortion(x, waveY);
+        var ripple = getRippleDistortion(x, waveY);
+        var finalX = x + mouse.dx + ripple.dx;
+        var finalY = waveY + mouse.dy + ripple.dy;
+        if (firstPoint) { ctx.moveTo(finalX, finalY); firstPoint = false; }
+        else ctx.lineTo(finalX, finalY);
+      }
+      ctx.strokeStyle = 'rgba(' + dotColor + ', ' + lineOpacity + ')';
+      ctx.lineWidth = lineWidth * (1 - line * 0.1);
+      ctx.stroke();
+    }
+  }
+
+  if (mouseOnPage) {
+    var glowRadius = mouseDown ? MOUSE_RADIUS * 1.8 : MOUSE_RADIUS;
+    var gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, glowRadius);
+    gradient.addColorStop(0, 'rgba(' + dotColor + ', ' + (mouseDown ? 0.06 : 0.03) + ')');
+    gradient.addColorStop(1, 'rgba(' + dotColor + ', 0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(mouseX - glowRadius, mouseY - glowRadius, glowRadius * 2, glowRadius * 2);
+  }
+
+  for (var rj = 0; rj < ripples.length; rj++) {
+    var rpl = ripples[rj];
+    ctx.beginPath();
+    ctx.arc(rpl.x, rpl.y, rpl.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(' + dotColor + ', ' + (rpl.life * 0.15) + ')';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
 </script>
 
 </body>
