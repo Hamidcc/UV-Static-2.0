@@ -482,9 +482,25 @@
   {
     "id": 61,
     "title": "FNAE",
-    "description": "Five Nights at Epstein's (FNAE) is a viral FNAE fan game that reimagines the 'Point-and-Click' terror of the classic survival horror genre.",
+    "description": "Five Nights at 3psteins's (FNAE) is a viral FNAE fan game that reimagines the 'Point-and-Click' terror of the classic survival horror genre.",
     "icon": "/i/fnae.png",
     "file": "/g/fnae/",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 62,
+    "title": "Fleeing The Complex",
+    "description": "You are trapped inside a small prison cell, and you must escape not just your cell but the whole prison!",
+    "icon": "/i/ftc.png",
+    "file": "/g/std/ftc.html",
+    "author": "https://itch.io"
+  },
+  {
+    "id": 63,
+    "title": "Breaking The Bank",
+    "description": "Help Henry Stickmin break into a bank that's situated in the middle of a desert.",
+    "icon": "/i/bank.png",
+    "file": "/g/std/bank.html",
     "author": "https://itch.io"
   }
 ]
