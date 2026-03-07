@@ -478,5 +478,13 @@
     "icon": "/i/xx142-b2exe.png",
     "file": "/g/xx142-b2exe/",
     "author": "https://itch.io"
+  },
+  {
+    "id": 61,
+    "title": "FNAE",
+    "description": "Five Nights at Epstein's (FNAE) is a viral FNAE fan game that reimagines the 'Point-and-Click' terror of the classic survival horror genre.",
+    "icon": "/i/fnae.png",
+    "file": "/g/fnae/",
+    "author": "https://itch.io"
   }
 ]
