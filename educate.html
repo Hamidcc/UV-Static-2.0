@@ -331,7 +331,7 @@
 
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:18px;">
-    <button class="icon-btn" onclick="goBack()">← Back</button>
+    <button class="icon-btn" onclick="goBack()">← Home</button>
     <span class="logo">UltraLearn</span>
   </div>
   <div class="topbar-right">
@@ -421,22 +421,74 @@ function getParam(name){
   return new URLSearchParams(location.search).get(name);
 }
 
+function gothicText(t){
+  if(!t) return "";
+  return t
+    .replace(/i/g,"𝔦")
+    .replace(/e/g,"𝔢")
+    .replace(/a/g,"𝔞");
+}
+
 (async function init(){
   const id = getParam("id");
   if(!id) return location.href = "index.html";
+
   let games = [];
-  try {
+  try{
     const r = await fetch("./games.json");
     if(r.ok) games = await r.json();
-  } catch{}
+  }catch{}
+
   const game = games.find(g => String(g.id) === String(id));
   if(!game) return location.href = "index.html";
 
-  document.getElementById("gameFrame").src = game.file || "";
+  const frame = document.getElementById("gameFrame");
+
+  if(game.file && game.file.toLowerCase().endsWith(".swf")){
+    frame.srcdoc = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruffle Example</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;}
+#ruffle{width:100vw;height:100vh;}
+</style>
+</head>
+<body>
+<div id="ruffle"></div>
+<script src="https://unpkg.com/@ruffle-rs/ruffle"><\/script>
+<script>
+var swfobject={};
+swfobject.embedSWF=function(url,cont){
+window.addEventListener("load",function(){
+var ruffle=window.RufflePlayer.newest();
+var player=ruffle.createPlayer();
+player.style.width="100vw";
+player.style.height="100vh";
+document.getElementById(cont).appendChild(player);
+player.load({url:url});
+});
+};
+swfobject.embedSWF("${game.file}","ruffle",800,600);
+<\/script>
+</body>
+</html>
+`;
+  }else{
+    frame.src = game.file || "";
+  }
+
+  const title = gothicText(game.title || "Untitled");
+  const description = gothicText(game.description || "No description available.");
 
   document.getElementById("credits").innerHTML = `
     <div class="credits-label">Credits</div>
-    <div class="credit-title" id="gameTitle">${game.title || "Untitled"}</div>
+    <div class="credit-title">${title}</div>
     <div class="credit-author">by ${game.author || "Unknown Author"}</div>
     <div class="divider"></div>
     <div class="credit-source">
@@ -445,7 +497,7 @@ function getParam(name){
     <div style="font-size:12px;color:var(--muted);line-height:1.5;">Thank you to the creators who made the software.</div>
   `;
 
-  document.getElementById("description").textContent = game.description || "No description available.";
+  document.getElementById("description").textContent = description;
 })();
 
 function closeSettings(){
